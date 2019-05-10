@@ -1,0 +1,591 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		848A016D22859556008D53CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A016C22859556008D53CB /* AppDelegate.swift */; };
+		848A016F22859556008D53CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A016E22859556008D53CB /* ViewController.swift */; };
+		848A017222859556008D53CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848A017022859556008D53CB /* Main.storyboard */; };
+		848A01742285955B008D53CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848A01732285955B008D53CB /* Assets.xcassets */; };
+		848A01772285955B008D53CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848A01752285955B008D53CB /* LaunchScreen.storyboard */; };
+		848A01822285955B008D53CB /* _D_Graph_ViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A01812285955B008D53CB /* _D_Graph_ViewerTests.swift */; };
+		848A018D2285955B008D53CB /* _D_Graph_ViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A018C2285955B008D53CB /* _D_Graph_ViewerUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		848A017E2285955B008D53CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848A016122859556008D53CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 848A016822859556008D53CB;
+			remoteInfo = "3D Graph Viewer";
+		};
+		848A01892285955B008D53CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848A016122859556008D53CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 848A016822859556008D53CB;
+			remoteInfo = "3D Graph Viewer";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		848A016922859556008D53CB /* 3D Graph Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3D Graph Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		848A016C22859556008D53CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		848A016E22859556008D53CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		848A017122859556008D53CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		848A01732285955B008D53CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		848A01762285955B008D53CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		848A01782285955B008D53CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848A017D2285955B008D53CB /* 3D Graph ViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "3D Graph ViewerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		848A01812285955B008D53CB /* _D_Graph_ViewerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _D_Graph_ViewerTests.swift; sourceTree = "<group>"; };
+		848A01832285955B008D53CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848A01882285955B008D53CB /* 3D Graph ViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "3D Graph ViewerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		848A018C2285955B008D53CB /* _D_Graph_ViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _D_Graph_ViewerUITests.swift; sourceTree = "<group>"; };
+		848A018E2285955B008D53CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		848A016622859556008D53CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		848A017A2285955B008D53CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		848A01852285955B008D53CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		848A016022859556008D53CB = {
+			isa = PBXGroup;
+			children = (
+				848A016B22859556008D53CB /* 3D Graph Viewer */,
+				848A01802285955B008D53CB /* 3D Graph ViewerTests */,
+				848A018B2285955B008D53CB /* 3D Graph ViewerUITests */,
+				848A016A22859556008D53CB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		848A016A22859556008D53CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				848A016922859556008D53CB /* 3D Graph Viewer.app */,
+				848A017D2285955B008D53CB /* 3D Graph ViewerTests.xctest */,
+				848A01882285955B008D53CB /* 3D Graph ViewerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		848A016B22859556008D53CB /* 3D Graph Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				848A016C22859556008D53CB /* AppDelegate.swift */,
+				848A016E22859556008D53CB /* ViewController.swift */,
+				848A017022859556008D53CB /* Main.storyboard */,
+				848A01732285955B008D53CB /* Assets.xcassets */,
+				848A01752285955B008D53CB /* LaunchScreen.storyboard */,
+				848A01782285955B008D53CB /* Info.plist */,
+			);
+			path = "3D Graph Viewer";
+			sourceTree = "<group>";
+		};
+		848A01802285955B008D53CB /* 3D Graph ViewerTests */ = {
+			isa = PBXGroup;
+			children = (
+				848A01812285955B008D53CB /* _D_Graph_ViewerTests.swift */,
+				848A01832285955B008D53CB /* Info.plist */,
+			);
+			path = "3D Graph ViewerTests";
+			sourceTree = "<group>";
+		};
+		848A018B2285955B008D53CB /* 3D Graph ViewerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				848A018C2285955B008D53CB /* _D_Graph_ViewerUITests.swift */,
+				848A018E2285955B008D53CB /* Info.plist */,
+			);
+			path = "3D Graph ViewerUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		848A016822859556008D53CB /* 3D Graph Viewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 848A01912285955B008D53CB /* Build configuration list for PBXNativeTarget "3D Graph Viewer" */;
+			buildPhases = (
+				848A016522859556008D53CB /* Sources */,
+				848A016622859556008D53CB /* Frameworks */,
+				848A016722859556008D53CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "3D Graph Viewer";
+			productName = "3D Graph Viewer";
+			productReference = 848A016922859556008D53CB /* 3D Graph Viewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		848A017C2285955B008D53CB /* 3D Graph ViewerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 848A01942285955B008D53CB /* Build configuration list for PBXNativeTarget "3D Graph ViewerTests" */;
+			buildPhases = (
+				848A01792285955B008D53CB /* Sources */,
+				848A017A2285955B008D53CB /* Frameworks */,
+				848A017B2285955B008D53CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				848A017F2285955B008D53CB /* PBXTargetDependency */,
+			);
+			name = "3D Graph ViewerTests";
+			productName = "3D Graph ViewerTests";
+			productReference = 848A017D2285955B008D53CB /* 3D Graph ViewerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		848A01872285955B008D53CB /* 3D Graph ViewerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 848A01972285955B008D53CB /* Build configuration list for PBXNativeTarget "3D Graph ViewerUITests" */;
+			buildPhases = (
+				848A01842285955B008D53CB /* Sources */,
+				848A01852285955B008D53CB /* Frameworks */,
+				848A01862285955B008D53CB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				848A018A2285955B008D53CB /* PBXTargetDependency */,
+			);
+			name = "3D Graph ViewerUITests";
+			productName = "3D Graph ViewerUITests";
+			productReference = 848A01882285955B008D53CB /* 3D Graph ViewerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		848A016122859556008D53CB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "Davide Gavio";
+				TargetAttributes = {
+					848A016822859556008D53CB = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					848A017C2285955B008D53CB = {
+						CreatedOnToolsVersion = 10.2;
+						TestTargetID = 848A016822859556008D53CB;
+					};
+					848A01872285955B008D53CB = {
+						CreatedOnToolsVersion = 10.2;
+						TestTargetID = 848A016822859556008D53CB;
+					};
+				};
+			};
+			buildConfigurationList = 848A016422859556008D53CB /* Build configuration list for PBXProject "3D Graph Viewer" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 848A016022859556008D53CB;
+			productRefGroup = 848A016A22859556008D53CB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				848A016822859556008D53CB /* 3D Graph Viewer */,
+				848A017C2285955B008D53CB /* 3D Graph ViewerTests */,
+				848A01872285955B008D53CB /* 3D Graph ViewerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		848A016722859556008D53CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				848A01772285955B008D53CB /* LaunchScreen.storyboard in Resources */,
+				848A01742285955B008D53CB /* Assets.xcassets in Resources */,
+				848A017222859556008D53CB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		848A017B2285955B008D53CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		848A01862285955B008D53CB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		848A016522859556008D53CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				848A016F22859556008D53CB /* ViewController.swift in Sources */,
+				848A016D22859556008D53CB /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		848A01792285955B008D53CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				848A01822285955B008D53CB /* _D_Graph_ViewerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		848A01842285955B008D53CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				848A018D2285955B008D53CB /* _D_Graph_ViewerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		848A017F2285955B008D53CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 848A016822859556008D53CB /* 3D Graph Viewer */;
+			targetProxy = 848A017E2285955B008D53CB /* PBXContainerItemProxy */;
+		};
+		848A018A2285955B008D53CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 848A016822859556008D53CB /* 3D Graph Viewer */;
+			targetProxy = 848A01892285955B008D53CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		848A017022859556008D53CB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				848A017122859556008D53CB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		848A01752285955B008D53CB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				848A01762285955B008D53CB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		848A018F2285955B008D53CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		848A01902285955B008D53CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		848A01922285955B008D53CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				INFOPLIST_FILE = "3D Graph Viewer/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.davidegavio.-D-Graph-Viewer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		848A01932285955B008D53CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				INFOPLIST_FILE = "3D Graph Viewer/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.davidegavio.-D-Graph-Viewer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		848A01952285955B008D53CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				INFOPLIST_FILE = "3D Graph ViewerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.davidegavio.-D-Graph-ViewerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/3D Graph Viewer.app/3D Graph Viewer";
+			};
+			name = Debug;
+		};
+		848A01962285955B008D53CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				INFOPLIST_FILE = "3D Graph ViewerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.davidegavio.-D-Graph-ViewerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/3D Graph Viewer.app/3D Graph Viewer";
+			};
+			name = Release;
+		};
+		848A01982285955B008D53CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				INFOPLIST_FILE = "3D Graph ViewerUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.davidegavio.-D-Graph-ViewerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "3D Graph Viewer";
+			};
+			name = Debug;
+		};
+		848A01992285955B008D53CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				INFOPLIST_FILE = "3D Graph ViewerUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.davidegavio.-D-Graph-ViewerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "3D Graph Viewer";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		848A016422859556008D53CB /* Build configuration list for PBXProject "3D Graph Viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				848A018F2285955B008D53CB /* Debug */,
+				848A01902285955B008D53CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		848A01912285955B008D53CB /* Build configuration list for PBXNativeTarget "3D Graph Viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				848A01922285955B008D53CB /* Debug */,
+				848A01932285955B008D53CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		848A01942285955B008D53CB /* Build configuration list for PBXNativeTarget "3D Graph ViewerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				848A01952285955B008D53CB /* Debug */,
+				848A01962285955B008D53CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		848A01972285955B008D53CB /* Build configuration list for PBXNativeTarget "3D Graph ViewerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				848A01982285955B008D53CB /* Debug */,
+				848A01992285955B008D53CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 848A016122859556008D53CB /* Project object */;
+}
