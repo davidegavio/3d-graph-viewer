@@ -14,6 +14,7 @@
 		848A01772285955B008D53CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848A01752285955B008D53CB /* LaunchScreen.storyboard */; };
 		848A01822285955B008D53CB /* _D_Graph_ViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A01812285955B008D53CB /* _D_Graph_ViewerTests.swift */; };
 		848A018D2285955B008D53CB /* _D_Graph_ViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A018C2285955B008D53CB /* _D_Graph_ViewerUITests.swift */; };
+		848A019C2285AAF9008D53CB /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A019B2285AAF9008D53CB /* Point.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		848A01A52285BA22008D53CB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		848A016922859556008D53CB /* 3D Graph Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3D Graph Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848A016C22859556008D53CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +61,8 @@
 		848A01882285955B008D53CB /* 3D Graph ViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "3D Graph ViewerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848A018C2285955B008D53CB /* _D_Graph_ViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _D_Graph_ViewerUITests.swift; sourceTree = "<group>"; };
 		848A018E2285955B008D53CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848A019A228595C9008D53CB /* 3D Graph Viewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "3D Graph Viewer.entitlements"; sourceTree = "<group>"; };
+		848A019B2285AAF9008D53CB /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +113,14 @@
 		848A016B22859556008D53CB /* 3D Graph Viewer */ = {
 			isa = PBXGroup;
 			children = (
+				848A019A228595C9008D53CB /* 3D Graph Viewer.entitlements */,
 				848A016C22859556008D53CB /* AppDelegate.swift */,
 				848A016E22859556008D53CB /* ViewController.swift */,
 				848A017022859556008D53CB /* Main.storyboard */,
 				848A01732285955B008D53CB /* Assets.xcassets */,
 				848A01752285955B008D53CB /* LaunchScreen.storyboard */,
 				848A01782285955B008D53CB /* Info.plist */,
+				848A019B2285AAF9008D53CB /* Point.swift */,
 			);
 			path = "3D Graph Viewer";
 			sourceTree = "<group>";
@@ -135,6 +153,7 @@
 				848A016522859556008D53CB /* Sources */,
 				848A016622859556008D53CB /* Frameworks */,
 				848A016722859556008D53CB /* Resources */,
+				848A01A52285BA22008D53CB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -193,6 +212,12 @@
 				TargetAttributes = {
 					848A016822859556008D53CB = {
 						CreatedOnToolsVersion = 10.2;
+						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					848A017C2285955B008D53CB = {
 						CreatedOnToolsVersion = 10.2;
@@ -258,6 +283,7 @@
 			files = (
 				848A016F22859556008D53CB /* ViewController.swift in Sources */,
 				848A016D22859556008D53CB /* AppDelegate.swift in Sources */,
+				848A019C2285AAF9008D53CB /* Point.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,8 +458,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "3D Graph Viewer/3D Graph Viewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "3D Graph Viewer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,8 +481,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "3D Graph Viewer/3D Graph Viewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC8DM9T9M7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "3D Graph Viewer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
