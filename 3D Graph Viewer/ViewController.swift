@@ -8,8 +8,6 @@
 
 import UIKit
 import MobileCoreServices
-import CSVImporter
-
 
 
 class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationControllerDelegate {
@@ -23,6 +21,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     
     @IBAction func plotButton(_ sender: Any) {
         print("Plot button pressed!")
+        performSegue(withIdentifier: "toARCameraSegue", sender: self)
         
     }
     
@@ -64,9 +63,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         documentPicker.modalPresentationStyle = .formSheet
         self.present(documentPicker, animated: true, completion: nil)
     }
-    
-    
-    
-    
+ 
 }
 
