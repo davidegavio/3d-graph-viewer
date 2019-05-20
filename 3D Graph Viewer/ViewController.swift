@@ -22,7 +22,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     @IBAction func plotButton(_ sender: Any) {
         print("Plot button pressed!")
         performSegue(withIdentifier: "toARCameraSegue", sender: self)
-        
     }
     
     
