@@ -17,10 +17,13 @@ class AugmentedRealityCameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Hello I'm second viewcontroller")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         augmentedRealityScatterplot.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         augmentedRealityScatterplot.session.run(arWorldTrackingConfiguration)
     }
-
     
     
     

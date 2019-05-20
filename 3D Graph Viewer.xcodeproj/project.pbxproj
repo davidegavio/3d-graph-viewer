@@ -215,7 +215,7 @@
 				TargetAttributes = {
 					848A016822859556008D53CB = {
 						CreatedOnToolsVersion = 10.2;
-						LastSwiftMigration = 1020;
+						LastSwiftMigration = "";
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -465,10 +465,7 @@
 				CODE_SIGN_ENTITLEMENTS = "3D Graph Viewer/3D Graph Viewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC8DM9T9M7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "3D Graph Viewer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -488,10 +485,7 @@
 				CODE_SIGN_ENTITLEMENTS = "3D Graph Viewer/3D Graph Viewer.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC8DM9T9M7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "3D Graph Viewer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
