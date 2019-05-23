@@ -14,8 +14,12 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     
     var pointsToPlot: [Point] = []
     
+    @IBOutlet weak var taskInAction: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        taskInAction.isHidden = true
+        taskInAction.hidesWhenStopped = true
         // Do any additional setup after loading the view.
     }
     
@@ -33,18 +37,27 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL){
         let fileUrl = url as URL
         print("Import result: \(fileUrl)")
-        do{
-            let wholeFile = try String(contentsOf: fileUrl)
-            let rowsOfCsv = wholeFile.components(separatedBy: "\n")
-            for singleRow in rowsOfCsv {
-                let valuesArray = singleRow.components(separatedBy: ",")
-                if valuesArray.count > 2 {
-                    let point: Point = Point(valuesArray: valuesArray)
-                    pointsToPlot.append(point)
-                    point.printAllValues()
-                }
+        taskInAction.isHidden = false
+        taskInAction.startAnimating()
+        DispatchQueue.global(qos: .userInitiated).sync { [weak self] in
+            guard let self = self else {
+                return
             }
-        } catch _{ print("Error parsing csv file!") }
+            do{
+                let wholeFile = try String(contentsOf: fileUrl)
+                let rowsOfCsv = wholeFile.components(separatedBy: "\n")
+                for singleRow in rowsOfCsv {
+                    let valuesArray = singleRow.components(separatedBy: ",")
+                    if valuesArray.count > 2 {
+                        let point: Point = Point(valuesArray: valuesArray)
+                        self.pointsToPlot.append(point)
+                        point.printAllValues()
+                    }
+                }
+            } catch _{ print("Error parsing csv file!") }
+            
+        }
+        taskInAction.stopAnimating()
         
     }
     
