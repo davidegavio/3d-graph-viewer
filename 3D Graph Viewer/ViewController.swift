@@ -24,6 +24,13 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         // Do any additional setup after loading the view.
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is AugmentedRealityCameraViewController{
+            let vc = segue.destination as? AugmentedRealityCameraViewController
+            vc?.pointsToPlot = pointsToPlot
+        }
+    }
+    
     @IBAction func plotButton(_ sender: Any) {
         print("Plot button pressed!")
         performSegue(withIdentifier: "toARCameraSegue", sender: self)
