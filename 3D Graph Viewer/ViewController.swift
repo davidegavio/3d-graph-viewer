@@ -15,6 +15,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     var pointsToPlot: [Point] = []
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView!
+    @IBOutlet weak var pointsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,10 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         documentPicker.modalPresentationStyle = .formSheet
         self.present(documentPicker, animated: true, completion: nil)
     }
+
+        
+    
  
+    
 }
 
