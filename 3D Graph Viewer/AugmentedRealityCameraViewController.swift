@@ -14,6 +14,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     @IBOutlet weak var augmentedRealityScatterplot: ARSCNView!
     let arWorldTrackingConfiguration = ARWorldTrackingConfiguration()
     var pointsToPlot: [Point] = []
+    var sphereNodes: [SCNNode] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +42,12 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     
     private func plotPoints(){
         for point in pointsToPlot{
-            let sphere = SCNSphere(radius: 0.1)
+            let sphere = SCNSphere(radius: 0.03)
             let sphereNode = SCNNode(geometry: sphere)
-            sphereNode.position = SCNVector3(Float(point.xCoordinate)!, Float(point.yCoordinate)!, Float(point.zCoordinate)!)
+            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 0), green: CGFloat(Float(point.gColour) ?? 255), blue: CGFloat(Float(point.bColour) ?? 255), alpha: 1)
+            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
+            print(sphereNode.position)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)
         }
-        print("Plotting points!")
     }
 }
