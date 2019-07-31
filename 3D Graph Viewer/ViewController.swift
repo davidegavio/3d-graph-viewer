@@ -16,6 +16,8 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView!
     @IBOutlet weak var pointsTableView: UITableView!
+    @IBOutlet weak var fileInfoLabel: UILabel!
+    @IBOutlet weak var fileEntryLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +35,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     
     @IBAction func plotButton(_ sender: Any) {
         print("Plot button pressed!")
-        performSegue(withIdentifier: "toARCameraSegue", sender: self)
+        self.performSegue(withIdentifier: "toARCameraSegue", sender: self)
     }
     
     
@@ -70,6 +72,8 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
             } catch _{ print("Error parsing csv file!") }
             
         }
+        fileInfoLabel.text = fileUrl.lastPathComponent
+        fileEntryLabel.text = String(pointsToPlot.count) + " points to plot"
         taskInAction.stopAnimating()
         
     }
