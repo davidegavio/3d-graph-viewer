@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8418795C22F1874100DACC50 /* AugmentedRealityFiducialMarkerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418795B22F1874100DACC50 /* AugmentedRealityFiducialMarkerViewController.swift */; };
 		848A016D22859556008D53CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A016C22859556008D53CB /* AppDelegate.swift */; };
 		848A016F22859556008D53CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848A016E22859556008D53CB /* ViewController.swift */; };
 		848A017222859556008D53CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848A017022859556008D53CB /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8418795B22F1874100DACC50 /* AugmentedRealityFiducialMarkerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentedRealityFiducialMarkerViewController.swift; sourceTree = "<group>"; };
 		848A016922859556008D53CB /* 3D Graph Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3D Graph Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848A016C22859556008D53CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		848A016E22859556008D53CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				848A01752285955B008D53CB /* LaunchScreen.storyboard */,
 				848A01782285955B008D53CB /* Info.plist */,
 				848A019B2285AAF9008D53CB /* Point.swift */,
+				8418795B22F1874100DACC50 /* AugmentedRealityFiducialMarkerViewController.swift */,
 			);
 			path = "3D Graph Viewer";
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8418795C22F1874100DACC50 /* AugmentedRealityFiducialMarkerViewController.swift in Sources */,
 				848A016F22859556008D53CB /* ViewController.swift in Sources */,
 				84CD9D25228C146E00C8394F /* AugmentedRealityCameraViewController.swift in Sources */,
 				848A016D22859556008D53CB /* AppDelegate.swift in Sources */,

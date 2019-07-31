@@ -37,6 +37,11 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     }
     
     
+    @IBAction func plotOnFiducialMarkerButton(_ sender: Any) {
+        print("Plotting on fiducial marker!")
+    }
+    
+    
     func documentMenu(_ documentMenu: UIDocumentPickerViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
