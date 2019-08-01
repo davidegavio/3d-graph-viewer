@@ -27,8 +27,12 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.destination is AugmentedRealityCameraViewController{
+        if segue.destination is AugmentedRealityCameraViewController {
             let vc = segue.destination as? AugmentedRealityCameraViewController
+            vc?.pointsToPlot = pointsToPlot
+        }
+        if segue.destination is AugmentedRealityFiducialMarkerViewController{
+            let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
             vc?.pointsToPlot = pointsToPlot
         }
     }

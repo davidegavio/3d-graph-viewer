@@ -17,14 +17,65 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
     var isImageDetected = false
+    var isPlaneDetected = false
+    var lastImagePosition:simd_float4x4?
+    var lastReferenceImageDetected:ARReferenceImage?
     var isHorizontalPlaneDetected = false
+    var shouldScatterplotBePlacedUponImage = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
         augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
-        
+        arWorldTrackingConfiguration.planeDetection = .horizontal
+        guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+            fatalError("Something went wrong importing resources.")
+        }
+        arWorldTrackingConfiguration.detectionImages = referenceImages
+        augmentedRealityFiducialMarkerScatterplot.session.run(arWorldTrackingConfiguration)
+        augmentedRealityFiducialMarkerScatterplot.delegate = self
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        manageSceneStateChanges(withAnchor: anchor)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        manageSceneStateChanges(withAnchor: anchor)
+    }
+    
+    private func manageSceneStateChanges(withAnchor anchor: ARAnchor){
+        if let imageAnchor = anchor as? ARImageAnchor{
+            lastImagePosition = imageAnchor.transform
+            let referenceImage = imageAnchor.referenceImage
+            lastReferenceImageDetected = referenceImage
+            print("Detected \(referenceImage.name!)")
+            placeScatterplotAt(position: lastImagePosition!)
+            shouldScatterplotBePlacedUponImage = false
+        }
+        isImageDetected = true
+        if let planeAnchor = anchor as? ARPlaneAnchor{
+            if planeAnchor.alignment == .horizontal{
+                print("Horizontal plane detected!")
+            }
+        }
+        isPlaneDetected = true
+    }
+    
+    private func placeScatterplotAt(position: simd_float4x4){
+        print("here")
+        print(pointsToPlot.count)
+        for point in pointsToPlot{
+            let sphere = SCNSphere(radius: 0.03)
+            let sphereNode = SCNNode(geometry: sphere)
+            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 0), green: CGFloat(Float(point.gColour) ?? 255), blue: CGFloat(Float(point.bColour) ?? 255), alpha: 1)
+            sphereNode.transform = SCNMatrix4(lastImagePosition!)
+            sphereNode.position = SCNVector3(Float(point.xCoordinate)!+(lastImagePosition?.columns.3.x)!/10, Float(point.yCoordinate)!+(lastImagePosition?.columns.3.y)!/10, Float(point.zCoordinate)!+(lastImagePosition?.columns.3.z)!/10)
+            //let scaleAction = SCNAction.scale(by: 0.05, duration: 0)
+            //jellyfishNode.runAction(scaleAction)
+            print(sphereNode.position)
+            }
     }
     
 }
