@@ -40,6 +40,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         }
     }
     
+    /**
+    * This method plots the points inherited from ViewController.
+    * It also creates the pysical points and sets their attributes.
+    **/
     private func plotPoints(){
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: 0.03)

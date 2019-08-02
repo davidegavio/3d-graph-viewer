@@ -64,16 +64,16 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     }
     
     private func placeScatterplotAt(position: simd_float4x4){
-        print("here")
-        print(pointsToPlot.count)
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: 0.03)
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 0), green: CGFloat(Float(point.gColour) ?? 255), blue: CGFloat(Float(point.bColour) ?? 255), alpha: 1)
             sphereNode.transform = SCNMatrix4(lastImagePosition!)
-            sphereNode.position = SCNVector3(Float(point.xCoordinate)!+(lastImagePosition?.columns.3.x)!/10, Float(point.yCoordinate)!+(lastImagePosition?.columns.3.y)!/10, Float(point.zCoordinate)!+(lastImagePosition?.columns.3.z)!/10)
+            sphereNode.position = SCNVector3((Float(point.xCoordinate)!+(lastImagePosition?.columns.3.x)!)/10, (Float(point.yCoordinate)!+(lastImagePosition?.columns.3.y)!)/10, (Float(point.zCoordinate)!+(lastImagePosition?.columns.3.z)!)/10)
+            //sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
             //let scaleAction = SCNAction.scale(by: 0.05, duration: 0)
             //jellyfishNode.runAction(scaleAction)
+            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(sphereNode)
             print(sphereNode.position)
             }
     }

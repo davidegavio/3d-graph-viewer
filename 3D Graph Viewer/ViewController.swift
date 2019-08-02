@@ -23,17 +23,20 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         super.viewDidLoad()
         taskInAction.isHidden = true
         taskInAction.hidesWhenStopped = true
+        self.navigationItem.title = "3D Graph Viewer"
         // Do any additional setup after loading the view.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.destination is AugmentedRealityCameraViewController {
+        switch segue.destination {
+        case is AugmentedRealityCameraViewController:
             let vc = segue.destination as? AugmentedRealityCameraViewController
             vc?.pointsToPlot = pointsToPlot
-        }
-        if segue.destination is AugmentedRealityFiducialMarkerViewController{
+        case is AugmentedRealityFiducialMarkerViewController:
             let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
             vc?.pointsToPlot = pointsToPlot
+        default:
+            print("This is not the ViewController you're looking for")
         }
     }
     
@@ -45,6 +48,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     
     @IBAction func plotOnFiducialMarkerButton(_ sender: Any) {
         print("Plotting on fiducial marker!")
+        self.performSegue(withIdentifier: "toARCameraFiducialMarkerSegue", sender: self)
     }
     
     
