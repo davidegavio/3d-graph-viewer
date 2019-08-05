@@ -65,7 +65,6 @@
                                 <state key="normal" title="Plot on fiducial marker"/>
                                 <connections>
                                     <action selector="plotOnFiducialMarkerButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RMC-fi-xSh"/>
-                                    <segue destination="hgD-yK-V8U" kind="show" id="Za6-pl-zXS"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-36-jq1">
@@ -118,12 +117,13 @@
                         <outlet property="fileEntryLabel" destination="tIp-Eg-9Oc" id="JFH-1d-bsO"/>
                         <outlet property="fileInfoLabel" destination="VH3-lD-aOc" id="jxn-l8-SdX"/>
                         <outlet property="taskInAction" destination="gyN-so-sUy" id="X89-e0-X7n"/>
-                        <segue destination="5FY-2t-oUL" kind="show" identifier="toARCameraSegue" id="6rn-ra-Qra"/>
+                        <segue destination="5FY-2t-oUL" kind="show" identifier="toARCameraSegue" id="aT5-oi-X4L"/>
+                        <segue destination="hgD-yK-V8U" kind="show" identifier="toARCameraFiducialMarkerSegue" id="YTX-0f-6nH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="28" y="-304.4977511244378"/>
+            <point key="canvasLocation" x="25" y="-322"/>
         </scene>
         <!--Augmented Reality Camera View Controller-->
         <scene sceneID="4Pn-7Z-sw0">

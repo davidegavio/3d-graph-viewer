@@ -2,7 +2,7 @@
 //  AugmentedRealityCameraViewController.swift
 //  3D Graph Viewer
 //
-//  Created by Admin on 15/05/2019.
+//  Created by Davide Gavio on 15/05/2019.
 //  Copyright © 2019 Davide Gavio. All rights reserved.
 //
 
@@ -23,7 +23,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityScatterplot.scene = scene
-        print("Hello I'm second viewcontroller")
+        print("Hello I'm AugmentedRealityCameraViewController")
         print(pointsToPlot)
     }
     
@@ -45,8 +45,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * It also creates the pysical points and sets their attributes.
     **/
     private func plotPoints(){
+        addPlanes()
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: 0.03)
+            //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 0), green: CGFloat(Float(point.gColour) ?? 255), blue: CGFloat(Float(point.bColour) ?? 255), alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
@@ -54,4 +56,21 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)
         }
     }
+    
+    private func addPlanes(){
+        let verticalNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
+        let horizontalNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
+        let sideNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
+        verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "plane")
+        horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "plane")
+        sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "plane")
+        horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
+        augmentedRealityScatterplot.scene.rootNode.addChildNode(verticalNode)
+        augmentedRealityScatterplot.scene.rootNode.addChildNode(horizontalNode)
+    }
+    
+}
+
+extension Int{
+    var toRadians: Double{ return Double(self) * .pi / 180}
 }

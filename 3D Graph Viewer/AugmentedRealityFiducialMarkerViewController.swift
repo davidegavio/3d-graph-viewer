@@ -2,7 +2,7 @@
 //  AugmentedRealityFiducialMarkerViewController.swift
 //  3D Graph Viewer
 //
-//  Created by Admin on 31/07/2019.
+//  Created by Davide Gavio on 31/07/2019.
 //  Copyright © 2019 Davide Gavio. All rights reserved.
 //
 
@@ -28,13 +28,20 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
         augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
-        arWorldTrackingConfiguration.planeDetection = .horizontal
+        let scene = SCNScene()
+        augmentedRealityFiducialMarkerScatterplot.scene = scene
+        print("Hello I'm AugmentedRealityFiducialMarkerViewController")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
             fatalError("Something went wrong importing resources.")
         }
+        arWorldTrackingConfiguration.planeDetection = .horizontal
         arWorldTrackingConfiguration.detectionImages = referenceImages
         augmentedRealityFiducialMarkerScatterplot.session.run(arWorldTrackingConfiguration)
-        augmentedRealityFiducialMarkerScatterplot.delegate = self
+        //augmentedRealityFiducialMarkerScatterplot.delegate = self
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -66,6 +73,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     private func placeScatterplotAt(position: simd_float4x4){
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: 0.03)
+            //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 0), green: CGFloat(Float(point.gColour) ?? 255), blue: CGFloat(Float(point.bColour) ?? 255), alpha: 1)
             sphereNode.transform = SCNMatrix4(lastImagePosition!)

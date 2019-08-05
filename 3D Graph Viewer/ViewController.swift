@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  3D Graph Viewer
 //
-//  Created by Admin on 10/05/2019.
+//  Created by Davide Gavio on 10/05/2019.
 //  Copyright © 2019 Davide Gavio. All rights reserved.
 //
 
@@ -12,9 +12,9 @@ import MobileCoreServices
 
 class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationControllerDelegate {
     
-    var pointsToPlot: [Point] = []
+    var pointsToPlot: [Point] = [] // List of points contained in csv file
     
-    @IBOutlet weak var taskInAction: UIActivityIndicatorView!
+    @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var pointsTableView: UITableView!
     @IBOutlet weak var fileInfoLabel: UILabel!
     @IBOutlet weak var fileEntryLabel: UILabel!
@@ -31,10 +31,10 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         switch segue.destination {
         case is AugmentedRealityCameraViewController:
             let vc = segue.destination as? AugmentedRealityCameraViewController
-            vc?.pointsToPlot = pointsToPlot
+            vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
         case is AugmentedRealityFiducialMarkerViewController:
             let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
-            vc?.pointsToPlot = pointsToPlot
+            vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
         default:
             print("This is not the ViewController you're looking for")
         }
@@ -45,32 +45,34 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         self.performSegue(withIdentifier: "toARCameraSegue", sender: self)
     }
     
-    
     @IBAction func plotOnFiducialMarkerButton(_ sender: Any) {
         print("Plotting on fiducial marker!")
         self.performSegue(withIdentifier: "toARCameraFiducialMarkerSegue", sender: self)
     }
-    
     
     func documentMenu(_ documentMenu: UIDocumentPickerViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
     }
     
+    /**
+    * The user choose the file to import points information
+    * The reading operation is performed in a separated thread in order to keep unlocked the main one
+    */
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL){
         let fileUrl = url as URL
         print("Import result: \(fileUrl)")
-        taskInAction.isHidden = false
-        taskInAction.startAnimating()
-        DispatchQueue.global(qos: .userInitiated).sync { [weak self] in
+        taskInAction.isHidden = false // Shows the loading wheel
+        taskInAction.startAnimating() // Animates the loading wheel
+        DispatchQueue.global(qos: .userInitiated).sync { [weak self] in // Reading operation in separate thread
             guard let self = self else {
                 return
             }
             do{
                 let wholeFile = try String(contentsOf: fileUrl)
-                let rowsOfCsv = wholeFile.components(separatedBy: "\n")
+                let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
                 for singleRow in rowsOfCsv {
-                    let valuesArray = singleRow.components(separatedBy: ",")
+                    let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
                     if valuesArray.count > 2 {
                         let point: Point = Point(valuesArray: valuesArray)
                         self.pointsToPlot.append(point)
@@ -82,8 +84,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         }
         fileInfoLabel.text = fileUrl.lastPathComponent
         fileEntryLabel.text = String(pointsToPlot.count) + " points to plot"
-        taskInAction.stopAnimating()
-        
+        taskInAction.stopAnimating() // Stops the loading wheel animation
     }
     
     private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {
@@ -91,19 +92,13 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
         dismiss(animated: true, completion: nil)
     }
     
-    
-    
     @IBAction func chooseFileButton(_ sender: Any) {
-        pointsToPlot.removeAll()
+        pointsToPlot.removeAll() // Choosing a new file cleans old points
         let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [String(kUTTypeText), String(kUTTypeRTF)    ], in: .import)
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = .formSheet
         self.present(documentPicker, animated: true, completion: nil)
     }
-
-        
-    
- 
     
 }
 

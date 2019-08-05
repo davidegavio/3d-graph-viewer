@@ -2,7 +2,7 @@
 //  _D_Graph_ViewerUITests.swift
 //  3D Graph ViewerUITests
 //
-//  Created by Admin on 10/05/2019.
+//  Created by Davide Gavio on 10/05/2019.
 //  Copyright © 2019 Davide Gavio. All rights reserved.
 //
 
