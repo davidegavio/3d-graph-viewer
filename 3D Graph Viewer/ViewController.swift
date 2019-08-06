@@ -13,6 +13,9 @@ import MobileCoreServices
 class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationControllerDelegate {
     
     var pointsToPlot: [Point] = [] // List of points contained in csv file
+    let defaultRColour = "5"
+    let defaultGColour = "52"
+    let defaultBColour = "105"
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var pointsTableView: UITableView!
@@ -56,7 +59,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     }
     
     /**
-    * The user choose the file to import points information
+    * The user chooses the file to import points information
     * The reading operation is performed in a separated thread in order to keep unlocked the main one
     */
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL){
@@ -94,7 +97,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     
     @IBAction func chooseFileButton(_ sender: Any) {
         pointsToPlot.removeAll() // Choosing a new file cleans old points
-        let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [String(kUTTypeText), String(kUTTypeRTF)    ], in: .import)
+        let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [String(kUTTypeText), String(kUTTypeRTF)], in: .import)
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = .formSheet
         self.present(documentPicker, animated: true, completion: nil)

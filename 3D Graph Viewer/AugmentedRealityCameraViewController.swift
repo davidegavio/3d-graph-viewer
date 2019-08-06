@@ -61,12 +61,19 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         let verticalNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
         let horizontalNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
         let sideNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
-        verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "plane")
-        horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "plane")
-        sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "plane")
+        verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
+        verticalNode.opacity = 0.5
+        horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
+        horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
         horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
+        horizontalNode.opacity = 0.5
+        sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
+        sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
+        sideNode.geometry?.firstMaterial?.isDoubleSided = true
+        sideNode.opacity = 0.5
         augmentedRealityScatterplot.scene.rootNode.addChildNode(verticalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(horizontalNode)
+        augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
     }
     
 }
