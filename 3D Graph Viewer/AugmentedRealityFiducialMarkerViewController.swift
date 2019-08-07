@@ -18,8 +18,8 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var sphereNodes: [SCNNode] = []
     var isImageDetected = false
     var isPlaneDetected = false
-    var lastImagePosition:simd_float4x4?
-    var lastReferenceImageDetected:ARReferenceImage?
+    var lastImagePosition: simd_float4x4?
+    var lastReferenceImageDetected: ARReferenceImage?
     var isHorizontalPlaneDetected = false
     var shouldScatterplotBePlacedUponImage = true
     
@@ -41,7 +41,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         arWorldTrackingConfiguration.planeDetection = .horizontal
         arWorldTrackingConfiguration.detectionImages = referenceImages
         augmentedRealityFiducialMarkerScatterplot.session.run(arWorldTrackingConfiguration)
-        //augmentedRealityFiducialMarkerScatterplot.delegate = self
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -76,13 +75,11 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     private func placeScatterplotAt(position: simd_float4x4){
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: 0.03)
-            //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 0), green: CGFloat(Float(point.gColour) ?? 255), blue: CGFloat(Float(point.bColour) ?? 255), alpha: 1)
-            
-            //sphereNode.position = SCNVector3((Float(point.xCoordinate)!+(lastImagePosition?.columns.3.x)!)/10, (Float(point.yCoordinate)!+(lastImagePosition?.columns.3.y)!)/10, (Float(point.zCoordinate)!+(lastImagePosition?.columns.3.z)!)/10)
             sphereNode.transform = SCNMatrix4(lastImagePosition!)
-            sphereNode.localTranslate(by: SCNVector3((Float(point.xCoordinate)!+(lastImagePosition?.columns.3.x)!)/10, (Float(point.yCoordinate)!+(lastImagePosition?.columns.3.y)!)/10, (Float(point.zCoordinate)!+(lastImagePosition?.columns.3.z)!)/10))
+            //sphereNode.localTranslate(by: SCNVector3((Float(point.xCoordinate)!+(lastImagePosition?.columns.3.x)!)/10, (Float(point.yCoordinate)!+(lastImagePosition?.columns.3.y)!)/10, (Float(point.zCoordinate)!+(lastImagePosition?.columns.3.z)!)/10))
+            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
             augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(sphereNode)
             print(sphereNode.position)
             }
@@ -96,16 +93,17 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         verticalNode.opacity = 0.5
         verticalNode.transform = SCNMatrix4(lastImagePosition!)
+        verticalNode.eulerAngles = SCNVector3(0, 0, 0)
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
-        horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
-        horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
-        horizontalNode.opacity = 0.5
         horizontalNode.transform = SCNMatrix4(lastImagePosition!)
+        horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
+        horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
+        horizontalNode.opacity = 0.5
         sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
+        sideNode.transform = SCNMatrix4(lastImagePosition!)
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
         sideNode.opacity = 0.5
-        sideNode.transform = SCNMatrix4(lastImagePosition!)
         augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(verticalNode)
         augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(horizontalNode)
         augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(sideNode)

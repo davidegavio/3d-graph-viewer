@@ -58,9 +58,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     }
     
     private func addPlanes(){
-        let verticalNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
-        let horizontalNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
-        let sideNode = SCNNode(geometry: SCNPlane(width: 1, height: 1))
+        let verticalNode = SCNNode(geometry: SCNPlane(width: 2, height: 2))
+        let horizontalNode = SCNNode(geometry: SCNPlane(width: 2, height: 2))
+        let sideNode = SCNNode(geometry: SCNPlane(width: 2, height: 2))
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         verticalNode.opacity = 0.5
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
