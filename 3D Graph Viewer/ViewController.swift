@@ -20,10 +20,14 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var pointsTableView: UITableView!
     @IBOutlet weak var fileInfoLabel: UILabel!
-    @IBOutlet weak var fileEntryLabel: UILabel!
+    @IBOutlet weak var plotInOpenAirButton: UIButton!
+    @IBOutlet weak var plotWithFiducialMarkerButton: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        plotInOpenAirButton.isEnabled = false // Plotting buttons are disabled until a file is chosen
+        plotWithFiducialMarkerButton.isEnabled = false
         taskInAction.isHidden = true
         taskInAction.hidesWhenStopped = true
         self.navigationItem.title = "3D Graph Viewer"
@@ -85,9 +89,12 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
             } catch _{ print("Error parsing csv file!") }
             
         }
-        fileInfoLabel.text = fileUrl.lastPathComponent
-        fileEntryLabel.text = String(pointsToPlot.count) + " points to plot"
+        fileInfoLabel.text = fileUrl.lastPathComponent + " contains " + String(pointsToPlot.count) + " points to plot"
+        //fileInfoLabel.lineBreakMode = .byWordWrapping
+        fileInfoLabel.numberOfLines = 0
         taskInAction.stopAnimating() // Stops the loading wheel animation
+        plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
+        plotWithFiducialMarkerButton.isEnabled = true
     }
     
     private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {

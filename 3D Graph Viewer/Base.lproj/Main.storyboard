@@ -55,7 +55,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gyN-so-sUy">
-                                <rect key="frame" x="177.5" y="324" width="20" height="19"/>
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9s-u0-lRS">
                                 <rect key="frame" x="16" y="583" width="343" height="30"/>
@@ -80,20 +80,9 @@
                                     <action selector="chooseFileButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dfB-ae-6tR"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIp-Eg-9Oc">
-                                <rect key="frame" x="16" y="352" width="343" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Veq-aZ-SoE"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VH3-lD-aOc">
-                                <rect key="frame" x="16" y="295" width="343" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="3R1-jK-YKr"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VH3-lD-aOc">
+                                <rect key="frame" x="16" y="323" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -101,37 +90,31 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="leading" secondItem="tIp-Eg-9Oc" secondAttribute="leading" id="5ZR-SY-V4D"/>
                             <constraint firstAttribute="bottomMargin" secondItem="D9s-u0-lRS" secondAttribute="bottom" constant="54" id="6il-QE-Uuj"/>
                             <constraint firstItem="gyN-so-sUy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8uj-09-lLZ"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="7Lf-88-Zmd" secondAttribute="leading" id="9YU-an-3Nn"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="B6Z-Fx-DAR"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CBO-4a-Rl0"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="leading" secondItem="YPS-36-jq1" secondAttribute="leading" id="DcW-Tc-XFf"/>
                             <constraint firstItem="D9s-u0-lRS" firstAttribute="top" secondItem="YPS-36-jq1" secondAttribute="bottom" constant="8" symbolic="YES" id="Dka-RT-Rfp"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="centerX" secondItem="gyN-so-sUy" secondAttribute="centerX" id="Gf0-bs-Z3l"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="H78-sb-xyf"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="D9s-u0-lRS" secondAttribute="leading" id="HDT-r2-aVj"/>
-                            <constraint firstItem="gyN-so-sUy" firstAttribute="top" secondItem="VH3-lD-aOc" secondAttribute="bottom" constant="8" symbolic="YES" id="HNE-1E-d9J"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="D9s-u0-lRS" secondAttribute="trailing" id="IYW-vz-Mgh"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="7Lf-88-Zmd" secondAttribute="trailing" id="UPG-SQ-22v"/>
                             <constraint firstItem="7Lf-88-Zmd" firstAttribute="top" secondItem="D9s-u0-lRS" secondAttribute="bottom" constant="8" symbolic="YES" id="YjA-En-pwv"/>
-                            <constraint firstItem="tIp-Eg-9Oc" firstAttribute="top" secondItem="gyN-so-sUy" secondAttribute="bottom" constant="9" id="dTF-5y-yKn"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="trailing" secondItem="tIp-Eg-9Oc" secondAttribute="trailing" id="fLj-4c-Dq4"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="295" id="nfR-RQ-Z3m"/>
                             <constraint firstItem="D9s-u0-lRS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="no0-1F-qJW"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="pob-dv-mAD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7Lf-88-Zmd" secondAttribute="trailing" constant="16" id="sei-Bk-8c7"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="centerX" secondItem="FBf-28-Kzh" secondAttribute="centerX" id="vxf-qx-Sbs"/>
                             <constraint firstItem="gyN-so-sUy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wra-Bk-gFs"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="trailing" secondItem="YPS-36-jq1" secondAttribute="trailing" id="xjr-q6-ueZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="8cR-aU-CbN"/>
                     <connections>
-                        <outlet property="fileEntryLabel" destination="tIp-Eg-9Oc" id="JFH-1d-bsO"/>
                         <outlet property="fileInfoLabel" destination="VH3-lD-aOc" id="jxn-l8-SdX"/>
+                        <outlet property="plotInOpenAirButton" destination="D9s-u0-lRS" id="Lws-C9-B2D"/>
+                        <outlet property="plotWithFiducialMarkerButton" destination="7Lf-88-Zmd" id="p9M-Fg-TEP"/>
                         <outlet property="taskInAction" destination="gyN-so-sUy" id="X89-e0-X7n"/>
                         <segue destination="5FY-2t-oUL" kind="show" identifier="toARCameraSegue" id="aT5-oi-X4L"/>
                         <segue destination="hgD-yK-V8U" kind="show" identifier="toARCameraFiducialMarkerSegue" id="YTX-0f-6nH"/>
