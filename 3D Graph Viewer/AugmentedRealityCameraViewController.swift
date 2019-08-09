@@ -76,6 +76,8 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
     }
     
+    
+    
 }
 
 extension Int{

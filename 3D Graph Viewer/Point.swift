@@ -15,14 +15,16 @@ struct Point {
     var rColour = ""
     var gColour = ""
     var bColour = ""
+    var sizeCoefficient = ""
     
-    init(xCoordinate: String, yCoordinate: String, zCoordinate: String, rColour: String, gColour: String, bColour: String) {
+    init(xCoordinate: String, yCoordinate: String, zCoordinate: String, rColour: String, gColour: String, bColour: String, sizeCoefficient: String) {
      self.xCoordinate = xCoordinate
      self.yCoordinate = yCoordinate
      self.zCoordinate = zCoordinate
      self.rColour = rColour
      self.gColour = gColour
      self.bColour = bColour
+     self.sizeCoefficient = sizeCoefficient
      }
     
     init(valuesArray: [String]){
@@ -32,10 +34,11 @@ struct Point {
         self.rColour = valuesArray[3]
         self.gColour = valuesArray[4]
         self.bColour = valuesArray[5]
+        self.sizeCoefficient = valuesArray[6]
     }
     
     public func printAllValues(){
-        print("Your point with xyz coordinates: (\(self.xCoordinate); \(self.yCoordinate); \(self.zCoordinate)) and rgb colour: (\(self.rColour)\(self.gColour)\(self.bColour)).")
+        print("Your point with xyz coordinates: (\(self.xCoordinate); \(self.yCoordinate); \(self.zCoordinate)), rgb colour: (\(self.rColour)\(self.gColour)\(self.bColour)) and size coefficient: (\(self.sizeCoefficient)).")
     }
     
 }
