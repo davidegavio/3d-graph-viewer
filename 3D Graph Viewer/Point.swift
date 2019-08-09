@@ -37,6 +37,8 @@ struct Point {
         self.sizeCoefficient = valuesArray[6]
     }
     
+    
+    
     public func printAllValues(){
         print("Your point with xyz coordinates: (\(self.xCoordinate); \(self.yCoordinate); \(self.zCoordinate)), rgb colour: (\(self.rColour)\(self.gColour)\(self.bColour)) and size coefficient: (\(self.sizeCoefficient)).")
     }
