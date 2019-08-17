@@ -47,7 +47,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     private func plotPoints(){
         addPlanes()
         for point in pointsToPlot{
-            let sphere = SCNSphere(radius: 0.03)
+            let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))
             //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5), green: CGFloat(Float(point.gColour) ?? 52), blue: CGFloat(Float(point.bColour) ?? 105), alpha: 1)
@@ -76,6 +76,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
     }
     
+    func registerGestureRecognizer(){
+        //let tap = UITapGestureRecognizer(target: self, action: #selector(search))
+    }
     
     
 }
