@@ -31,6 +31,8 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityFiducialMarkerScatterplot.scene = scene
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
+        augmentedRealityFiducialMarkerScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         originNode = SCNNode()
         print("Hello I'm AugmentedRealityFiducialMarkerViewController")
     }
@@ -77,11 +79,14 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     }
     
     private func placeScatterplotAt(position: simd_float4x4){
+        var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5), green: CGFloat(Float(point.gColour) ?? 52), blue: CGFloat(Float(point.bColour) ?? 105), alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
+            sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
+            i += 1
             originNode.addChildNode(sphereNode)
             print(sphereNode.position)
             }
@@ -111,6 +116,21 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         originNode.addChildNode(verticalNode)
         originNode.addChildNode(horizontalNode)
         originNode.addChildNode(sideNode)
+    }
+    
+    /**
+     * @objc annotation because the method is made available to Objective-C.
+     * Some parts of iOS workflow is handled by Objective-C code.
+     **/
+    @objc func handleTap(rec: UITapGestureRecognizer){
+        if rec.state == .ended { // When the tap event ends
+            let location: CGPoint = rec.location(in: augmentedRealityFiducialMarkerScatterplot) // Gets the location of the tap
+            let hits = self.augmentedRealityFiducialMarkerScatterplot.hitTest(location, options: nil)
+            if !hits.isEmpty{ // A list of hit events
+                let tappedNode = hits.first?.node
+                print(tappedNode ?? "Nothing tapped")
+            }
+        }
     }
     
 }

@@ -23,6 +23,8 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityScatterplot.scene = scene
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
+        augmentedRealityScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         print("Hello I'm AugmentedRealityCameraViewController")
         print(pointsToPlot)
     }
@@ -46,10 +48,13 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     **/
     private func plotPoints(){
         addPlanes()
+        var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))
             //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
+            sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
+            i += 1
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5), green: CGFloat(Float(point.gColour) ?? 52), blue: CGFloat(Float(point.bColour) ?? 105), alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
             print(sphereNode.position)
@@ -76,13 +81,24 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
     }
     
-    func registerGestureRecognizer(){
-        //let tap = UITapGestureRecognizer(target: self, action: #selector(search))
+    /**
+    * @objc annotation used to make available to Objective-C.
+    * Some parts of iOS workflow is handled by Objective-C code.
+    **/
+    @objc func handleTap(rec: UITapGestureRecognizer){
+        if rec.state == .ended { // When the tap event ends
+            let location: CGPoint = rec.location(in: augmentedRealityScatterplot) // Gets the location of the tap
+            let hits = self.augmentedRealityScatterplot.hitTest(location, options: nil)
+            if !hits.isEmpty{ // A list of hit events
+                let tappedNode = hits.first?.node
+                print(tappedNode ?? "Nothing tapped")
+            }
+        }
     }
-    
     
 }
 
-extension Int{
-    var toRadians: Double{ return Double(self) * .pi / 180}
-}
+/**
+* Extending the Int type in order to convert to radians.
+**/
+extension Int{ var toRadians: Double{ return Double(self) * .pi / 180} }

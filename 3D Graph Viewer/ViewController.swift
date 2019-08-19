@@ -8,9 +8,10 @@
 
 import UIKit
 import MobileCoreServices
+import AVFoundation
 
 
-class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var pointsToPlot: [Point] = [] // List of points contained in csv file
     let defaultRColour = "5"
@@ -69,6 +70,71 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL){
         let fileUrl = url as URL
         print("Import result: \(fileUrl)")
+        // In the following do/try/catch block the file is converted into a string
+        var wholeFile = ""
+        do{
+            wholeFile = try String(contentsOf: fileUrl)
+        }
+        catch _{ print("Error parsing csv file!") }
+        readFile(wholeFile: wholeFile)
+        fileInfoLabel.text = fileUrl.lastPathComponent + " contains " + String(pointsToPlot.count) + " points to plot"
+        //fileInfoLabel.lineBreakMode = .byWordWrapping
+        fileInfoLabel.numberOfLines = 0
+        
+    }
+    
+    private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {
+        print("View was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func chooseFileButton(_ sender: Any) {
+        let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [String(kUTTypeText), String(kUTTypeRTF)], in: .import)
+        documentPicker.delegate = self
+        documentPicker.modalPresentationStyle = .formSheet
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func scanFromPictureButton(_ sender: Any) {
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .savedPhotosAlbum
+            imagePicker.allowsEditing = false
+            present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            let detector: CIDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy:CIDetectorAccuracyHigh])! // QRCode reader from CoreImage library
+            var qrCodeData = ""
+            let ciImage: CIImage = CIImage(image: pickedImage)! // Converting the picked photo in a Core Image compatible format
+            let features = detector.features(in: ciImage) // Searches for features in image
+            for feature in features as! [CIQRCodeFeature] {
+                qrCodeData += feature.messageString!
+            }
+            if qrCodeData == "" {
+                print("Can't read from qrcode")
+            }else{
+                print("Qr code data: \(qrCodeData)")
+            }
+            readFile(wholeFile: qrCodeData)
+            fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    /**
+    * Generalized method: now wheter data comes from a pictures or a document the behaviour is the same.
+    * Reads the input string, creates for each row a Point and appends to the points to plot list.
+    **/
+    private func readFile(wholeFile: String){
+        pointsToPlot.removeAll() // Reading a new file cleans the points list
         taskInAction.isHidden = false // Shows the loading wheel
         taskInAction.startAnimating() // Animates the loading wheel
         DispatchQueue.global(qos: .userInitiated).sync { [weak self] in // Reading operation in separate thread
@@ -76,7 +142,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
                 return
             }
             do{
-                let wholeFile = try String(contentsOf: fileUrl)
                 let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
                 for singleRow in rowsOfCsv {
                     let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
@@ -86,29 +151,12 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UINavigationCo
                         point.printAllValues()
                     }
                 }
-            } catch _{ print("Error parsing csv file!") }
-            
+            }
+            taskInAction.stopAnimating() // Stops the loading wheel animation
+            plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
+            plotWithFiducialMarkerButton.isEnabled = true
         }
-        fileInfoLabel.text = fileUrl.lastPathComponent + " contains " + String(pointsToPlot.count) + " points to plot"
-        //fileInfoLabel.lineBreakMode = .byWordWrapping
-        fileInfoLabel.numberOfLines = 0
-        taskInAction.stopAnimating() // Stops the loading wheel animation
-        plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
-        plotWithFiducialMarkerButton.isEnabled = true
+        
     }
-    
-    private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {
-        print("View was cancelled")
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func chooseFileButton(_ sender: Any) {
-        pointsToPlot.removeAll() // Choosing a new file cleans old points
-        let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [String(kUTTypeText), String(kUTTypeRTF)], in: .import)
-        documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = .formSheet
-        self.present(documentPicker, animated: true, completion: nil)
-    }
-    
 }
 
