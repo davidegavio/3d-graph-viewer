@@ -14,6 +14,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     
     @IBOutlet weak var augmentedRealityFiducialMarkerScatterplot: ARSCNView!
     let arWorldTrackingConfiguration = ARWorldTrackingConfiguration()
+    var customReferenceSet = Set<ARReferenceImage>()
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
     var isImageDetected = false
@@ -23,9 +24,11 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var isHorizontalPlaneDetected = false
     var shouldScatterplotBePlacedUponImage = true
     var originNode: SCNNode!
+    var pickedImage: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addReference()
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
         augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
@@ -43,7 +46,8 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             fatalError("Something went wrong importing resources.")
         }
         arWorldTrackingConfiguration.planeDetection = .horizontal
-        arWorldTrackingConfiguration.detectionImages = referenceImages
+        print(customReferenceSet.count)
+        arWorldTrackingConfiguration.detectionImages = customReferenceSet
         augmentedRealityFiducialMarkerScatterplot.session.run(arWorldTrackingConfiguration)
     }
     
@@ -60,8 +64,8 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             if shouldScatterplotBePlacedUponImage{
                 lastImagePosition = imageAnchor.transform
                 let referenceImage = imageAnchor.referenceImage
+                referenceImage.name = "Reference QR Code image"
                 lastReferenceImageDetected = referenceImage
-                print("Detected \(referenceImage.name!)")
                 addPlanes()
                 placeScatterplotAt(position: lastImagePosition!)
                 augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(originNode)
@@ -83,7 +87,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))
             let sphereNode = SCNNode(geometry: sphere)
-            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5), green: CGFloat(Float(point.gColour) ?? 52), blue: CGFloat(Float(point.bColour) ?? 105), alpha: 1)
+            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
@@ -131,6 +135,12 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
                 print(tappedNode ?? "Nothing tapped")
             }
         }
+    }
+    
+    func addReference(){
+        guard let cgImage = pickedImage.cgImage else {return}
+        let arImage = ARReferenceImage(cgImage, orientation: CGImagePropertyOrientation.up, physicalWidth: CGFloat(cgImage.width))
+        customReferenceSet.insert(arImage)
     }
     
 }

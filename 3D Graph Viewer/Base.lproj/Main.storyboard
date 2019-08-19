@@ -58,18 +58,11 @@
                                 <rect key="frame" x="177.5" y="323" width="20" height="21"/>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9s-u0-lRS">
-                                <rect key="frame" x="16" y="583" width="343" height="30"/>
+                                <rect key="frame" x="136" y="583" width="103" height="30"/>
                                 <accessibility key="accessibilityConfiguration" hint="Plot the selected csv graph" label="Plot button"/>
                                 <state key="normal" title="Plot in open air"/>
                                 <connections>
                                     <action selector="plotButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TBF-7Y-vxx"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Lf-88-Zmd">
-                                <rect key="frame" x="16" y="621" width="343" height="30"/>
-                                <state key="normal" title="Plot on fiducial marker"/>
-                                <connections>
-                                    <action selector="plotOnFiducialMarkerButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RMC-fi-xSh"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPS-36-jq1">
@@ -83,7 +76,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VH3-lD-aOc">
                                 <rect key="frame" x="16" y="323" width="343" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="nul-qy-MiI"/>
+                                    <constraint firstAttribute="height" constant="21" id="p7V-4b-VbB"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -96,33 +89,34 @@
                                     <action selector="scanFromPictureButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JbM-dW-Wdr"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Lf-88-Zmd">
+                                <rect key="frame" x="111" y="617" width="153" height="30"/>
+                                <state key="normal" title="Plot on fiducial marker"/>
+                                <connections>
+                                    <action selector="plotOnFiducialMarkerButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RMC-fi-xSh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottomMargin" secondItem="D9s-u0-lRS" secondAttribute="bottom" constant="54" id="6il-QE-Uuj"/>
+                            <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7fi-1S-Mew"/>
                             <constraint firstItem="gyN-so-sUy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8uj-09-lLZ"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="7Lf-88-Zmd" secondAttribute="leading" id="9YU-an-3Nn"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="B6Z-Fx-DAR"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CBO-4a-Rl0"/>
-                            <constraint firstItem="D9s-u0-lRS" firstAttribute="top" secondItem="YPS-36-jq1" secondAttribute="bottom" constant="8" symbolic="YES" id="Dka-RT-Rfp"/>
-                            <constraint firstItem="xF2-Rk-VNv" firstAttribute="leading" secondItem="YPS-36-jq1" secondAttribute="leading" id="FNw-6l-NHd"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="centerX" secondItem="gyN-so-sUy" secondAttribute="centerX" id="Gf0-bs-Z3l"/>
+                            <constraint firstItem="D9s-u0-lRS" firstAttribute="top" secondItem="YPS-36-jq1" secondAttribute="bottom" constant="8" symbolic="YES" id="ElK-Bo-ZtN"/>
+                            <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="xF2-Rk-VNv" secondAttribute="leading" id="H00-ba-nhE"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="H78-sb-xyf"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="D9s-u0-lRS" secondAttribute="leading" id="HDT-r2-aVj"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="bottom" secondItem="gyN-so-sUy" secondAttribute="bottom" id="HEI-V6-smt"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="D9s-u0-lRS" secondAttribute="trailing" id="IYW-vz-Mgh"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="top" secondItem="xF2-Rk-VNv" secondAttribute="bottom" constant="8" symbolic="YES" id="Qbf-5K-eHT"/>
-                            <constraint firstItem="xF2-Rk-VNv" firstAttribute="leading" secondItem="VH3-lD-aOc" secondAttribute="leading" id="S0j-VW-fcU"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="7Lf-88-Zmd" secondAttribute="trailing" id="UPG-SQ-22v"/>
-                            <constraint firstItem="7Lf-88-Zmd" firstAttribute="top" secondItem="D9s-u0-lRS" secondAttribute="bottom" constant="8" symbolic="YES" id="YjA-En-pwv"/>
-                            <constraint firstItem="xF2-Rk-VNv" firstAttribute="trailing" secondItem="VH3-lD-aOc" secondAttribute="trailing" id="buI-8S-CEP"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="centerY" secondItem="gyN-so-sUy" secondAttribute="centerY" id="g9O-Ha-B7a"/>
-                            <constraint firstItem="xF2-Rk-VNv" firstAttribute="trailing" secondItem="YPS-36-jq1" secondAttribute="trailing" id="m7r-YF-Gmd"/>
+                            <constraint firstItem="VH3-lD-aOc" firstAttribute="trailing" secondItem="xF2-Rk-VNv" secondAttribute="trailing" id="Wah-AL-OOD"/>
+                            <constraint firstAttribute="bottom" secondItem="7Lf-88-Zmd" secondAttribute="bottom" constant="20" symbolic="YES" id="YAb-hk-oHQ"/>
+                            <constraint firstItem="7Lf-88-Zmd" firstAttribute="centerX" secondItem="D9s-u0-lRS" secondAttribute="centerX" id="Yd7-FU-WzT"/>
+                            <constraint firstItem="YPS-36-jq1" firstAttribute="top" secondItem="xF2-Rk-VNv" secondAttribute="bottom" constant="8" symbolic="YES" id="eTf-Ij-DS8"/>
+                            <constraint firstItem="VH3-lD-aOc" firstAttribute="bottom" secondItem="gyN-so-sUy" secondAttribute="bottom" id="n0A-po-sv7"/>
                             <constraint firstItem="D9s-u0-lRS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="no0-1F-qJW"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="pob-dv-mAD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7Lf-88-Zmd" secondAttribute="trailing" constant="16" id="sei-Bk-8c7"/>
-                            <constraint firstItem="YPS-36-jq1" firstAttribute="centerX" secondItem="FBf-28-Kzh" secondAttribute="centerX" id="vxf-qx-Sbs"/>
+                            <constraint firstItem="VH3-lD-aOc" firstAttribute="leading" secondItem="xF2-Rk-VNv" secondAttribute="leading" id="qam-ht-LwV"/>
+                            <constraint firstItem="YPS-36-jq1" firstAttribute="centerX" secondItem="D9s-u0-lRS" secondAttribute="centerX" id="uT0-hZ-cys"/>
                             <constraint firstItem="gyN-so-sUy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wra-Bk-gFs"/>
+                            <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="xF2-Rk-VNv" secondAttribute="trailing" id="xOT-VA-73m"/>
+                            <constraint firstItem="VH3-lD-aOc" firstAttribute="top" secondItem="gyN-so-sUy" secondAttribute="top" id="xi3-i8-dCr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

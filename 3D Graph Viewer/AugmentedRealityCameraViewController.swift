@@ -55,7 +55,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             let sphereNode = SCNNode(geometry: sphere)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
-            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5), green: CGFloat(Float(point.gColour) ?? 52), blue: CGFloat(Float(point.bColour) ?? 105), alpha: 1)
+            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
             print(sphereNode.position)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)

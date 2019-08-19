@@ -14,6 +14,7 @@ import AVFoundation
 class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var pointsToPlot: [Point] = [] // List of points contained in csv file
+    var tempImage: UIImage?
     let defaultRColour = "5"
     let defaultGColour = "52"
     let defaultBColour = "105"
@@ -43,6 +44,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         case is AugmentedRealityFiducialMarkerViewController:
             let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
             vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
+            vc?.pickedImage = tempImage
         default:
             print("This is not the ViewController you're looking for")
         }
@@ -107,6 +109,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            tempImage = pickedImage
             let detector: CIDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy:CIDetectorAccuracyHigh])! // QRCode reader from CoreImage library
             var qrCodeData = ""
             let ciImage: CIImage = CIImage(image: pickedImage)! // Converting the picked photo in a Core Image compatible format
@@ -120,7 +123,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 print("Qr code data: \(qrCodeData)")
             }
             readFile(wholeFile: qrCodeData)
-            fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
         }
         dismiss(animated: true, completion: nil)
     }
@@ -152,11 +154,17 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                     }
                 }
             }
+            if(pointsToPlot.count > 0){
+                plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
+                plotWithFiducialMarkerButton.isEnabled = true
+                fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
+            }
+            else{
+                fileInfoLabel.text = "The picture doesn't contain any data"
+            }
             taskInAction.stopAnimating() // Stops the loading wheel animation
-            plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
-            plotWithFiducialMarkerButton.isEnabled = true
+            
         }
-        
     }
 }
 
