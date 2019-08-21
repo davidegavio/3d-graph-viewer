@@ -15,6 +15,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     let arWorldTrackingConfiguration = ARWorldTrackingConfiguration()
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
+    var maxPointRadius: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +52,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))
+            if(sphere.radius > maxPointRadius){
+                maxPointRadius = sphere.radius
+            }
             //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
@@ -86,12 +90,24 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * Some parts of iOS workflow is handled by Objective-C code.
     **/
     @objc func handleTap(rec: UITapGestureRecognizer){
+        augmentedRealityScatterplot.scene.rootNode.childNodes.filter({$0.name == "Info"}).forEach({$0.removeFromParentNode()}) // Removing previous information text in order to have just one visible
         if rec.state == .ended { // When the tap event ends
             let location: CGPoint = rec.location(in: augmentedRealityScatterplot) // Gets the location of the tap
             let hits = self.augmentedRealityScatterplot.hitTest(location, options: nil)
-            if !hits.isEmpty{ // A list of hit events
-                let tappedNode = hits.first?.node
-                print(tappedNode ?? "Nothing tapped")
+            if !hits.isEmpty { // A list of hit events
+                let tappedNode = hits.first?.node // The tapped node
+                if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
+                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(tappedNode?.position.x ?? -1); \(tappedNode?.position.y ?? -1); \(tappedNode?.position.y ?? -1)"
+                    let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
+                    let textNode = SCNNode(geometry: textToShow)
+                    print(text)
+                    textNode.name = "Info"
+                    textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+                    textNode.position = SCNVector3(((tappedNode?.position.x)! + Float(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
+                    print(textNode.position)
+                    textNode.scale = SCNVector3(0.002,0.002,0.002)
+                    augmentedRealityScatterplot.scene.rootNode.addChildNode(textNode)
+                }
             }
         }
     }

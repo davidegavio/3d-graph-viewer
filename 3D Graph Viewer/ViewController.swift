@@ -18,6 +18,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     let defaultRColour = "5"
     let defaultGColour = "52"
     let defaultBColour = "105"
+    var scannedPicture = false
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var pointsTableView: UITableView!
@@ -45,6 +46,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
             vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
             vc?.pickedImage = tempImage
+            vc?.scannedPicture = scannedPicture
         default:
             print("This is not the ViewController you're looking for")
         }
@@ -80,7 +82,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         catch _{ print("Error parsing csv file!") }
         readFile(wholeFile: wholeFile)
         fileInfoLabel.text = fileUrl.lastPathComponent + " contains " + String(pointsToPlot.count) + " points to plot"
-        //fileInfoLabel.lineBreakMode = .byWordWrapping
         fileInfoLabel.numberOfLines = 0
         
     }
@@ -91,6 +92,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     @IBAction func chooseFileButton(_ sender: Any) {
+        scannedPicture = false
         let documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [String(kUTTypeText), String(kUTTypeRTF)], in: .import)
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = .formSheet
@@ -122,6 +124,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             }else{
                 print("Qr code data: \(qrCodeData)")
             }
+            scannedPicture = true
             readFile(wholeFile: qrCodeData)
         }
         dismiss(animated: true, completion: nil)

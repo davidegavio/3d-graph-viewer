@@ -17,6 +17,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var customReferenceSet = Set<ARReferenceImage>()
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
+    var scannedPicture = false
     var isImageDetected = false
     var isPlaneDetected = false
     var lastImagePosition: simd_float4x4?
@@ -28,7 +29,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addReference()
+        if(scannedPicture == true){
+            addReference()
+        }
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
         augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
@@ -46,7 +49,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             fatalError("Something went wrong importing resources.")
         }
         arWorldTrackingConfiguration.planeDetection = .horizontal
-        print(customReferenceSet.count)
         arWorldTrackingConfiguration.detectionImages = customReferenceSet
         augmentedRealityFiducialMarkerScatterplot.session.run(arWorldTrackingConfiguration)
     }
@@ -140,6 +142,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     func addReference(){
         guard let cgImage = pickedImage.cgImage else {return}
         let arImage = ARReferenceImage(cgImage, orientation: CGImagePropertyOrientation.up, physicalWidth: CGFloat(cgImage.width))
+        print(cgImage.width)
         customReferenceSet.insert(arImage)
     }
     
