@@ -34,7 +34,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         taskInAction.isHidden = true
         taskInAction.hidesWhenStopped = true
         self.navigationItem.title = "3D Graph Viewer"
-        // Do any additional setup after loading the view.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

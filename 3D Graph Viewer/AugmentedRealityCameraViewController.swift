@@ -27,7 +27,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
         augmentedRealityScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         print("Hello I'm AugmentedRealityCameraViewController")
-        print(pointsToPlot)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,21 +54,42 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
-            //let sphere = SCNSphere(radius: 1)
             let sphereNode = SCNNode(geometry: sphere)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
+            //sphereNode.position = SCNVector3(Float(point.xCoordinate)!, Float(point.yCoordinate)!, Float(point.zCoordinate)!)
             print(sphereNode.position)
+            let coordX = "\(sphereNode.position.x)"
+            let coordY = "\(sphereNode.position.y)"
+            let coordZ = "\(sphereNode.position.z)"
+            let textX = SCNText(string: coordX, extrusionDepth: CGFloat(1))
+            let textY = SCNText(string: coordY, extrusionDepth: CGFloat(1))
+            let textZ = SCNText(string: coordZ, extrusionDepth: CGFloat(1))
+            let textNodeX = SCNNode(geometry: textX)
+            let textNodeY = SCNNode(geometry: textY)
+            let textNodeZ = SCNNode(geometry: textZ)
+            textNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+            textNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+            textNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+            textNodeX.position = SCNVector3(x: sphereNode.position.x, y: 0, z: 0)
+            textNodeY.position = SCNVector3(x: 0, y: sphereNode.position.y, z: 0)
+            textNodeZ.position = SCNVector3(x: 0, y: 0, z: sphereNode.position.z)
+            textNodeX.scale = SCNVector3(0.002,0.002,0.002)
+            textNodeY.scale = SCNVector3(0.002,0.002,0.002)
+            textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
+            augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeX)
+            augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeY)
+            augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeZ)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)
         }
     }
     
     private func addPlanes(){
-        let verticalNode = SCNNode(geometry: SCNPlane(width: 2, height: 2))
-        let horizontalNode = SCNNode(geometry: SCNPlane(width: 2, height: 2))
-        let sideNode = SCNNode(geometry: SCNPlane(width: 2, height: 2))
+        let verticalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
+        let horizontalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
+        let sideNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         verticalNode.opacity = 0.5
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
@@ -80,6 +100,8 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
         sideNode.opacity = 0.5
+        print("Here")
+        print(verticalNode.rotation)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(verticalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(horizontalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
