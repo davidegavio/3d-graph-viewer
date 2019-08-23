@@ -25,7 +25,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var isHorizontalPlaneDetected = false
     var shouldScatterplotBePlacedUponImage = false
     var originNode: SCNNode!
-    var pickedImage: UIImage!
+    var pickedImage: CIImage!
     var maxPointRadius: CGFloat = 0
     
     override func viewDidLoad() {
@@ -42,7 +42,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
         augmentedRealityFiducialMarkerScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         originNode = SCNNode()
-        print("Hello I'm AugmentedRealityFiducialMarkerViewController")
+        //print("Hello I'm AugmentedRealityFiducialMarkerViewController")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,15 +66,15 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     private func manageSceneStateChanges(withAnchor anchor: ARAnchor){
         if let imageAnchor = anchor as? ARImageAnchor{
             lastImagePosition = imageAnchor.transform
+            print(lastImagePosition)
+            shouldScatterplotBePlacedUponImage = true
             if shouldScatterplotBePlacedUponImage{
-                print("Here")
                 let referenceImage = imageAnchor.referenceImage
-                referenceImage.name = "Reference QR Code image"
+                //referenceImage.name = "Reference QR Code image"
                 lastReferenceImageDetected = referenceImage
-                addPlanes()
                 placeScatterplotAt(position: lastImagePosition!)
                 originNode.transform = SCNMatrix4(lastImagePosition!)
-                originNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
+                addPlanes()
                 augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(originNode)
                 shouldScatterplotBePlacedUponImage = false
             }
@@ -116,27 +116,23 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             originNode.addChildNode(sphereNode)
-            print(sphereNode.position)
+            //print(sphereNode.position)
             }
     }
     
     private func addPlanes(){
-        print("Adding planes")
+        //print("Adding planes")
         let verticalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
         let horizontalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
         let sideNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         verticalNode.opacity = 0.5
-        verticalNode.transform = SCNMatrix4(lastImagePosition!)
         verticalNode.geometry?.firstMaterial?.isDoubleSided = true
-        verticalNode.eulerAngles = SCNVector3(0, 0, 0)
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
-        horizontalNode.transform = SCNMatrix4(lastImagePosition!)
         horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
         horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
         horizontalNode.opacity = 0.5
         sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
-        sideNode.transform = SCNMatrix4(lastImagePosition!)
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
         sideNode.opacity = 0.5
@@ -160,11 +156,11 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
                     let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(tappedNode?.position.x ?? -1); \(tappedNode?.position.y ?? -1); \(tappedNode?.position.y ?? -1)"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
-                    print(text)
+                    //print(text)
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(((tappedNode?.position.x)! + Float(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
-                    print(textNode.position)
+                    //print(textNode.position)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
                     augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(textNode)
                 }
@@ -175,8 +171,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     func addReference(){
         guard let cgImage = pickedImage.cgImage else {return}
         let arImage = ARReferenceImage(cgImage, orientation: CGImagePropertyOrientation.upMirrored, physicalWidth: CGFloat(cgImage.width))
-        print(arImage.physicalSize)
+        arImage.name = "Custom ARImage"
         customReferenceSet.insert(arImage)
+        print("Added ARReferenceImage: \(arImage)")
     }
     
 }
