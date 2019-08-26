@@ -96,6 +96,21 @@
                                     <action selector="plotOnFiducialMarkerButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RMC-fi-xSh"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="rCT-HN-6TH">
+                                <rect key="frame" x="112" y="471" width="151" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="27" id="13A-Xv-6Rz"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="mm"/>
+                                    <segment title="cm"/>
+                                    <segment title="dm"/>
+                                    <segment title="m"/>
+                                </segments>
+                                <connections>
+                                    <action selector="unitChosen:" destination="BYZ-38-t0r" eventType="valueChanged" id="hUs-Jg-W7l"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -106,6 +121,8 @@
                             <constraint firstItem="D9s-u0-lRS" firstAttribute="top" secondItem="YPS-36-jq1" secondAttribute="bottom" constant="8" symbolic="YES" id="ElK-Bo-ZtN"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="xF2-Rk-VNv" secondAttribute="leading" id="H00-ba-nhE"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="H78-sb-xyf"/>
+                            <constraint firstItem="rCT-HN-6TH" firstAttribute="centerX" secondItem="xF2-Rk-VNv" secondAttribute="centerX" id="Ut5-Nt-wBi"/>
+                            <constraint firstItem="xF2-Rk-VNv" firstAttribute="top" secondItem="rCT-HN-6TH" secondAttribute="bottom" constant="9" id="W0c-Ad-SRV"/>
                             <constraint firstItem="VH3-lD-aOc" firstAttribute="trailing" secondItem="xF2-Rk-VNv" secondAttribute="trailing" id="Wah-AL-OOD"/>
                             <constraint firstAttribute="bottom" secondItem="7Lf-88-Zmd" secondAttribute="bottom" constant="20" symbolic="YES" id="YAb-hk-oHQ"/>
                             <constraint firstItem="7Lf-88-Zmd" firstAttribute="centerX" secondItem="D9s-u0-lRS" secondAttribute="centerX" id="Yd7-FU-WzT"/>
@@ -126,6 +143,7 @@
                         <outlet property="plotInOpenAirButton" destination="D9s-u0-lRS" id="Lws-C9-B2D"/>
                         <outlet property="plotWithFiducialMarkerButton" destination="7Lf-88-Zmd" id="p9M-Fg-TEP"/>
                         <outlet property="taskInAction" destination="gyN-so-sUy" id="X89-e0-X7n"/>
+                        <outlet property="unitSelector" destination="rCT-HN-6TH" id="9Hm-X1-1CJ"/>
                         <segue destination="5FY-2t-oUL" kind="show" identifier="toARCameraSegue" id="aT5-oi-X4L"/>
                         <segue destination="hgD-yK-V8U" kind="show" identifier="toARCameraFiducialMarkerSegue" id="YTX-0f-6nH"/>
                     </connections>

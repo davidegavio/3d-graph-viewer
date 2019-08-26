@@ -16,6 +16,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
     var maxPointRadius: CGFloat = 0
+    var unitMeasure: Float = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,8 +59,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
-            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
-            //sphereNode.position = SCNVector3(Float(point.xCoordinate)!, Float(point.yCoordinate)!, Float(point.zCoordinate)!)
+            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/unitMeasure, Float(point.yCoordinate)!/unitMeasure, Float(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
             print(sphereNode.position)
             let coordX = "\(sphereNode.position.x)"
             let coordY = "\(sphereNode.position.y)"
@@ -100,8 +100,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
         sideNode.opacity = 0.5
-        print("Here")
-        print(verticalNode.rotation)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(verticalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(horizontalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)

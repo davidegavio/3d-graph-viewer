@@ -19,13 +19,14 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     let defaultGColour = "52"
     let defaultBColour = "105"
     var scannedPicture = false
+    var unitMeasure: Float = 10
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var pointsTableView: UITableView!
     @IBOutlet weak var fileInfoLabel: UILabel!
     @IBOutlet weak var plotInOpenAirButton: UIButton!
     @IBOutlet weak var plotWithFiducialMarkerButton: UIButton!
-    
+    @IBOutlet weak var unitSelector: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +42,13 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         case is AugmentedRealityCameraViewController:
             let vc = segue.destination as? AugmentedRealityCameraViewController
             vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
+            vc?.unitMeasure = unitMeasure
         case is AugmentedRealityFiducialMarkerViewController:
             let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
             vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
             vc?.pickedImage = tempImage
             vc?.scannedPicture = scannedPicture
+            vc?.unitMeasure = unitMeasure
         default:
             print("This is not the ViewController you're looking for")
         }
@@ -118,11 +121,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             for feature in features as! [CIQRCodeFeature] {
                 qrCodeData += feature.messageString!
             }
-            /*if qrCodeData == "" {
-                print("Can't read from qrcode")
-            }else{
-                print("Qr code data: \(qrCodeData)")
-            }*/
             scannedPicture = true
             readFile(wholeFile: qrCodeData)
         }
@@ -152,7 +150,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                     if valuesArray.count > 2 {
                         let point: Point = Point(valuesArray: valuesArray)
                         self.pointsToPlot.append(point)
-                        //point.printAllValues()
                     }
                 }
             }
@@ -166,6 +163,21 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             }
             taskInAction.stopAnimating() // Stops the loading wheel animation
             
+        }
+    }
+    
+    @IBAction func unitChosen(_ sender: Any) {
+        switch unitSelector.selectedSegmentIndex{
+            case 0:
+                unitMeasure = 1000
+            case 1:
+                unitMeasure = 100
+            case 2:
+                unitMeasure = 10
+            case 3:
+                unitMeasure = 1
+            default:
+                unitMeasure = 1
         }
     }
 }

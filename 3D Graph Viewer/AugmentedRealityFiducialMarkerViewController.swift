@@ -27,6 +27,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var originNode: SCNNode!
     var pickedImage: CIImage!
     var maxPointRadius: CGFloat = 0
+    var unitMeasure: Float = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +67,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     private func manageSceneStateChanges(withAnchor anchor: ARAnchor){
         if let imageAnchor = anchor as? ARImageAnchor{
             lastImagePosition = imageAnchor.transform
-            print(lastImagePosition)
             shouldScatterplotBePlacedUponImage = true
             if shouldScatterplotBePlacedUponImage{
                 let referenceImage = imageAnchor.referenceImage
@@ -78,8 +78,8 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
                 augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(originNode)
                 shouldScatterplotBePlacedUponImage = false
             }
+            isImageDetected = true
         }
-        isImageDetected = true
     }
     
     private func placeScatterplotAt(position: simd_float4x4){
@@ -91,7 +91,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             }
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
-            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/10, Float(point.yCoordinate)!/10, Float(point.zCoordinate)!/10)
+            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/unitMeasure, Float(point.yCoordinate)!/unitMeasure, Float(point.zCoordinate)!/unitMeasure)
             let coordX = "\(sphereNode.position.x)"
             let coordY = "\(sphereNode.position.y)"
             let coordZ = "\(sphereNode.position.z)"
@@ -116,7 +116,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             originNode.addChildNode(sphereNode)
-            //print(sphereNode.position)
             }
     }
     
@@ -160,7 +159,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(((tappedNode?.position.x)! + Float(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
-                    //print(textNode.position)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
                     augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(textNode)
                 }
