@@ -50,7 +50,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * It also creates the pysical points and sets their attributes.
     **/
     private func plotPoints(){
-        print(shouldPlanesBeShown)
         if shouldPlanesBeShown{
             addPlanes()
         }
@@ -65,7 +64,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             i += 1
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/unitMeasure, Float(point.yCoordinate)!/unitMeasure, Float(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
-            print(sphereNode.position)
             let coordX = "\(sphereNode.position.x)"
             let coordY = "\(sphereNode.position.y)"
             let coordZ = "\(sphereNode.position.z)"
@@ -125,11 +123,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                     let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(tappedNode?.position.x ?? -1); \(tappedNode?.position.y ?? -1); \(tappedNode?.position.y ?? -1)"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
-                    print(text)
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(((tappedNode?.position.x)! + Float(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
-                    print(textNode.position)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
                     augmentedRealityScatterplot.scene.rootNode.addChildNode(textNode)
                 }

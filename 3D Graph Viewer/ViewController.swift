@@ -39,10 +39,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("prepare")
-        print(shouldPlanesBeShown)
-        print(shouldAxesLabelsBeShown)
-        print(unitMeasure)
         switch segue.destination {
             case is AugmentedRealityCameraViewController:
                 let vc = segue.destination as? AugmentedRealityCameraViewController
@@ -114,7 +110,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         readFile(wholeFile: wholeFile)
         fileInfoLabel.text = fileUrl.lastPathComponent + " contains " + String(pointsToPlot.count) + " points to plot"
         fileInfoLabel.numberOfLines = 0
-        
     }
     
     private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {
@@ -175,7 +170,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             do{
                 let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
                 for singleRow in rowsOfCsv {
-                    print(singleRow.count)
                     let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
                     if valuesArray.count > 6 {
                         let point: Point = Point(valuesArray: valuesArray)
