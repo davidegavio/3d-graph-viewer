@@ -16,7 +16,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
     var maxPointRadius: CGFloat = 0
-    var unitMeasure: Float = 1
+    var unitMeasure: Float = 10
+    var shouldPlanesBeShown = true
+    var shouldAxesLabelsBeShown = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +50,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * It also creates the pysical points and sets their attributes.
     **/
     private func plotPoints(){
-        addPlanes()
+        print(shouldPlanesBeShown)
+        if shouldPlanesBeShown{
+            addPlanes()
+        }
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))

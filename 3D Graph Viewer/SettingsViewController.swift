@@ -22,6 +22,20 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Hello I'm SettingsViewController")
+        switch unit{
+        case 1000:
+            unitOfMeasure.selectedSegmentIndex = 0
+        case 100:
+            unitOfMeasure.selectedSegmentIndex = 1
+        case 10:
+            unitOfMeasure.selectedSegmentIndex = 2
+        case 1:
+            unitOfMeasure.selectedSegmentIndex = 3
+        default:
+            unitOfMeasure.selectedSegmentIndex = 2
+        }
+        showPlanes.isOn = planes
+        showAxesLabels.isOn = axesLabels
     }
     
     override func viewWillAppear(_ animated: Bool) {

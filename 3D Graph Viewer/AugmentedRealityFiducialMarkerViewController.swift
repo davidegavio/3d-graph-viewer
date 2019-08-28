@@ -27,10 +27,13 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var originNode: SCNNode!
     var pickedImage: CIImage!
     var maxPointRadius: CGFloat = 0
-    var unitMeasure: Float = 1
+    var unitMeasure: Float = 10
+    var shouldPlanesBeShown = true
+    var shouldAxesLabelsBeShown = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(shouldPlanesBeShown)
         if(scannedPicture == true){
             shouldScatterplotBePlacedUponImage = true
             //addReference()
@@ -74,7 +77,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
                 lastReferenceImageDetected = referenceImage
                 placeScatterplotAt(position: lastImagePosition!)
                 originNode.transform = SCNMatrix4(lastImagePosition!)
-                addPlanes()
+                if shouldPlanesBeShown{
+                    addPlanes()
+                }
                 augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(originNode)
                 shouldScatterplotBePlacedUponImage = false
             }

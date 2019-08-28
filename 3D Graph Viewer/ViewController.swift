@@ -39,21 +39,30 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("prepare")
+        print(shouldPlanesBeShown)
+        print(shouldAxesLabelsBeShown)
+        print(unitMeasure)
         switch segue.destination {
             case is AugmentedRealityCameraViewController:
                 let vc = segue.destination as? AugmentedRealityCameraViewController
                 vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
                 vc?.unitMeasure = unitMeasure
+                vc?.shouldAxesLabelsBeShown = shouldAxesLabelsBeShown
+                vc?.shouldPlanesBeShown = shouldPlanesBeShown
             case is AugmentedRealityFiducialMarkerViewController:
                 let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
                 vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
                 vc?.pickedImage = tempImage
                 vc?.scannedPicture = scannedPicture
                 vc?.unitMeasure = unitMeasure
+                vc?.shouldAxesLabelsBeShown = shouldAxesLabelsBeShown
+                vc?.shouldPlanesBeShown = shouldPlanesBeShown
             case is SettingsViewController:
                 let vc = segue.destination as? SettingsViewController
-                vc?.unit =
-                print("here")
+                vc?.unit = unitMeasure
+                vc?.axesLabels = shouldAxesLabelsBeShown
+                vc?.planes = shouldPlanesBeShown
             default:
                 print("This is not the ViewController you're looking for")
         }
@@ -69,7 +78,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         self.performSegue(withIdentifier: "toARCameraFiducialMarkerSegue", sender: self)
     }
     
-
     @IBAction func settingsButton(_ sender: Any) {
         print("Opening settings!")
         self.performSegue(withIdentifier: "toSettingsViewControllerSegue", sender: self)
@@ -78,9 +86,9 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     @IBAction func unwindFromSettings(_ sender: UIStoryboardSegue){
         if sender.source is SettingsViewController{
             if let senderVC = sender.source as? SettingsViewController{
-                print(senderVC.axesLabels)
-                print(senderVC.planes)
-                print(senderVC.unit)
+                unitMeasure = senderVC.unit
+                shouldPlanesBeShown = senderVC.planes
+                shouldAxesLabelsBeShown = senderVC.axesLabels
             }
         }
     }
