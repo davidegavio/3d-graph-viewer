@@ -27,7 +27,7 @@ struct Point {
      self.sizeCoefficient = sizeCoefficient
      }
     
-    init(valuesArray: [String]){
+    init(valuesArray: [String]) {
         self.xCoordinate = valuesArray[0]
         self.yCoordinate = valuesArray[1]
         self.zCoordinate = valuesArray[2]

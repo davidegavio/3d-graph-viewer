@@ -5,13 +5,13 @@
   },
   "resources" : [
     {
+      "filename" : "apple_logo.arreferenceimage"
+    },
+    {
       "filename" : "google_agenda.arreferenceimage"
     },
     {
-      "filename" : "static_qr_code_without_logo 2.arreferenceimage"
-    },
-    {
-      "filename" : "transparent_grid_png_1404573.arreferenceimage"
+      "filename" : "unimi_logo.arreferenceimage"
     }
   ]
 }

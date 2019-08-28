@@ -33,7 +33,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         super.viewDidLoad()
         if(scannedPicture == true){
             shouldScatterplotBePlacedUponImage = true
-            addReference()
+            //addReference()
         }
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
@@ -52,7 +52,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             fatalError("Something went wrong importing resources.")
         }
         arWorldTrackingConfiguration.planeDetection = .horizontal
-        arWorldTrackingConfiguration.detectionImages = customReferenceSet
+        arWorldTrackingConfiguration.detectionImages = referenceImages
         augmentedRealityFiducialMarkerScatterplot.session.run(arWorldTrackingConfiguration)
     }
     
@@ -155,7 +155,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
                     let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(tappedNode?.position.x ?? -1); \(tappedNode?.position.y ?? -1); \(tappedNode?.position.y ?? -1)"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
-                    //print(text)
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(((tappedNode?.position.x)! + Float(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)

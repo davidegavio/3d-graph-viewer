@@ -20,13 +20,15 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     let defaultBColour = "105"
     var scannedPicture = false
     var unitMeasure: Float = 10
+    var shouldPlanesBeShown = true
+    var shouldAxesLabelsBeShown = true
+    
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var pointsTableView: UITableView!
     @IBOutlet weak var fileInfoLabel: UILabel!
     @IBOutlet weak var plotInOpenAirButton: UIButton!
     @IBOutlet weak var plotWithFiducialMarkerButton: UIButton!
-    @IBOutlet weak var unitSelector: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,23 +36,26 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         plotWithFiducialMarkerButton.isEnabled = false
         taskInAction.isHidden = true
         taskInAction.hidesWhenStopped = true
-        self.navigationItem.title = "3D Graph Viewer"
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
-        case is AugmentedRealityCameraViewController:
-            let vc = segue.destination as? AugmentedRealityCameraViewController
-            vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
-            vc?.unitMeasure = unitMeasure
-        case is AugmentedRealityFiducialMarkerViewController:
-            let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
-            vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
-            vc?.pickedImage = tempImage
-            vc?.scannedPicture = scannedPicture
-            vc?.unitMeasure = unitMeasure
-        default:
-            print("This is not the ViewController you're looking for")
+            case is AugmentedRealityCameraViewController:
+                let vc = segue.destination as? AugmentedRealityCameraViewController
+                vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
+                vc?.unitMeasure = unitMeasure
+            case is AugmentedRealityFiducialMarkerViewController:
+                let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
+                vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
+                vc?.pickedImage = tempImage
+                vc?.scannedPicture = scannedPicture
+                vc?.unitMeasure = unitMeasure
+            case is SettingsViewController:
+                let vc = segue.destination as? SettingsViewController
+                vc?.unit =
+                print("here")
+            default:
+                print("This is not the ViewController you're looking for")
         }
     }
     
@@ -62,6 +67,22 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     @IBAction func plotOnFiducialMarkerButton(_ sender: Any) {
         print("Plotting on fiducial marker!")
         self.performSegue(withIdentifier: "toARCameraFiducialMarkerSegue", sender: self)
+    }
+    
+
+    @IBAction func settingsButton(_ sender: Any) {
+        print("Opening settings!")
+        self.performSegue(withIdentifier: "toSettingsViewControllerSegue", sender: self)
+    }
+    
+    @IBAction func unwindFromSettings(_ sender: UIStoryboardSegue){
+        if sender.source is SettingsViewController{
+            if let senderVC = sender.source as? SettingsViewController{
+                print(senderVC.axesLabels)
+                print(senderVC.planes)
+                print(senderVC.unit)
+            }
+        }
     }
     
     func documentMenu(_ documentMenu: UIDocumentPickerViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
@@ -146,8 +167,9 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             do{
                 let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
                 for singleRow in rowsOfCsv {
+                    print(singleRow.count)
                     let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
-                    if valuesArray.count > 2 {
+                    if valuesArray.count > 6 {
                         let point: Point = Point(valuesArray: valuesArray)
                         self.pointsToPlot.append(point)
                     }
@@ -166,19 +188,5 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         }
     }
     
-    @IBAction func unitChosen(_ sender: Any) {
-        switch unitSelector.selectedSegmentIndex{
-            case 0:
-                unitMeasure = 1000
-            case 1:
-                unitMeasure = 100
-            case 2:
-                unitMeasure = 10
-            case 3:
-                unitMeasure = 1
-            default:
-                unitMeasure = 1
-        }
-    }
 }
 
