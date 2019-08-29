@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Augmented Reality Fiducial Marker View Controller-->
+        <!--Fiducial marker graph-->
         <scene sceneID="Umi-SW-NZv">
             <objects>
                 <viewController id="hgD-yK-V8U" customClass="AugmentedRealityFiducialMarkerViewController" customModule="_D_Graph_Viewer" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,6 +31,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="m21-o1-Tqw"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Fiducial marker graph" id="Tdh-td-PbU">
+                        <barButtonItem key="rightBarButtonItem" title="Info" id="m1X-a4-NlF">
+                            <connections>
+                                <action selector="showGraphInfo:" destination="hgD-yK-V8U" id="MD1-Lb-FbF"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="augmentedRealityFiducialMarkerScatterplot" destination="zXQ-ce-Soj" id="RTV-j3-v9m"/>
                     </connections>
@@ -285,7 +292,7 @@
             </objects>
             <point key="canvasLocation" x="921" y="-867"/>
         </scene>
-        <!--Augmented Reality Camera View Controller-->
+        <!--Open air graph-->
         <scene sceneID="4Pn-7Z-sw0">
             <objects>
                 <viewController id="5FY-2t-oUL" customClass="AugmentedRealityCameraViewController" customModule="_D_Graph_Viewer" customModuleProvider="target" sceneMemberID="viewController">
@@ -306,6 +313,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vj7-7u-7mx"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Open air graph" id="IqP-Vq-uyZ">
+                        <barButtonItem key="rightBarButtonItem" title="Info" id="HQr-om-XbQ">
+                            <connections>
+                                <action selector="showGraphInfo:" destination="5FY-2t-oUL" id="qNj-IP-XSS"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="augmentedRealityScatterplot" destination="n3d-AH-hOT" id="QG4-KM-cdy"/>
                     </connections>

@@ -16,6 +16,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
     var maxPointRadius: CGFloat = 0
+    var maxIndex: Float = 0
     var unitMeasure: Float = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
@@ -59,11 +60,18 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
+            let tempMax = max(max(Float(point.xCoordinate)!, Float(point.yCoordinate)!), Float(point.zCoordinate)!)
+            if tempMax > maxIndex{
+                maxIndex = tempMax
+            }
             let sphereNode = SCNNode(geometry: sphere)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/unitMeasure, Float(point.yCoordinate)!/unitMeasure, Float(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
+            if shouldAxesLabelsBeShown{
+                showLabels()
+            }
             let coordX = "\(sphereNode.position.x)"
             let coordY = "\(sphereNode.position.y)"
             let coordZ = "\(sphereNode.position.z)"
@@ -82,9 +90,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             textNodeX.scale = SCNVector3(0.002,0.002,0.002)
             textNodeY.scale = SCNVector3(0.002,0.002,0.002)
             textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeX)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeY)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeZ)
+            //augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeX)
+            //augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeY)
+            //augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeZ)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)
         }
     }
@@ -120,7 +128,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             if !hits.isEmpty { // A list of hit events
                 let tappedNode = hits.first?.node // The tapped node
                 if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
-                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(tappedNode?.position.x ?? -1); \(tappedNode?.position.y ?? -1); \(tappedNode?.position.y ?? -1)"
+                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \((tappedNode?.position.x)! * unitMeasure); \((tappedNode?.position.y)! * unitMeasure); \((tappedNode?.position.z)! * unitMeasure)"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
                     textNode.name = "Info"
@@ -131,6 +139,48 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                 }
             }
         }
+    }
+    
+    func showLabels(){
+        for label in 0...(Int(maxIndex) + 1) {
+            let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
+            let labelNodeX = SCNNode(geometry: labelToShow)
+            labelNodeX.position = SCNVector3(Float(label)/unitMeasure, 0, 0)
+            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeY = SCNNode(geometry: labelToShow)
+            labelNodeY.position = SCNVector3(0, Float(label)/unitMeasure, 0)
+            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeZ = SCNNode(geometry: labelToShow)
+            labelNodeZ.position = SCNVector3(0, 0, Float(label)/unitMeasure)
+            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
+            augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeX)
+            augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeY)
+            augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeZ)
+        }
+    }
+    
+    @IBAction func showGraphInfo(_ sender: Any) {
+        var scale = ""
+        switch unitMeasure {
+        case 1:
+            scale = "meters"
+        case 10:
+            scale = "decimeters"
+        case 100:
+            scale = "centimeters"
+        case 1000:
+            scale = "millimeters"
+        default:
+            scale = "decimeters"
+        }
+        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown)"
+        let alertController = UIAlertController(title: "Graph information", message:
+            info, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+        self.present(alertController, animated: true, completion: nil)
     }
     
 }

@@ -14,10 +14,12 @@ class SettingsViewController: UITableViewController {
     var unit: Float = 10
     var planes: Bool = true
     var axesLabels: Bool = true
+    var pointRadius: Float = 0.03
 
     @IBOutlet weak var showAxesLabels: UISwitch!
     @IBOutlet weak var showPlanes: UISwitch!
     @IBOutlet weak var unitOfMeasure: UISegmentedControl!
+    @IBOutlet weak var pointRadiusInput: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,7 @@ class SettingsViewController: UITableViewController {
         }
         showPlanes.isOn = planes
         showAxesLabels.isOn = axesLabels
+        pointRadiusInput.text = String(pointRadius)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +53,7 @@ class SettingsViewController: UITableViewController {
         let unitSend = unit
         let axesSend = axesLabels
         let planesSend = planes
+        let pointRadiusSend = pointRadius
     }
     
     
@@ -71,12 +75,15 @@ class SettingsViewController: UITableViewController {
     
     @IBAction func showPlanesSwitch(_ sender: Any) {
         planes = showPlanes.isOn
-        //print(planes)
     }
     
     @IBAction func showAxesLabelsSwitch(_ sender: Any) {
         axesLabels = showAxesLabels.isOn
-        //print(axesLabels)
+    }
+    
+    @IBAction func setPointRadius(_ sender: Any) {
+        //pointRadius = pointRadiusInput.text as Float
     }
     
 }
+

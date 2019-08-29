@@ -28,6 +28,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var pickedImage: CIImage!
     var maxPointRadius: CGFloat = 0
     var unitMeasure: Float = 10
+    var maxIndex: Float = 0
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
     
@@ -94,6 +95,13 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
+            let tempMax = max(max(Float(point.xCoordinate)!, Float(point.yCoordinate)!), Float(point.zCoordinate)!)
+            if tempMax > maxIndex{
+                maxIndex = tempMax
+            }
+            if shouldAxesLabelsBeShown{
+                showLabels()
+            }
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
             sphereNode.position = SCNVector3(Float(point.xCoordinate)!/unitMeasure, Float(point.yCoordinate)!/unitMeasure, Float(point.zCoordinate)!/unitMeasure)
@@ -115,9 +123,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             textNodeX.scale = SCNVector3(0.002,0.002,0.002)
             textNodeY.scale = SCNVector3(0.002,0.002,0.002)
             textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            originNode.addChildNode(textNodeX)
-            originNode.addChildNode(textNodeY)
-            originNode.addChildNode(textNodeZ)
+            //originNode.addChildNode(textNodeX)
+            //originNode.addChildNode(textNodeY)
+            //originNode.addChildNode(textNodeZ)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             originNode.addChildNode(sphereNode)
@@ -177,5 +185,48 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         customReferenceSet.insert(arImage)
         print("Added ARReferenceImage: \(arImage)")
     }
+    
+    func showLabels(){
+        for label in 0...(Int(maxIndex) + 1) {
+            let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
+            let labelNodeX = SCNNode(geometry: labelToShow)
+            labelNodeX.position = SCNVector3(Float(label)/unitMeasure, 0, 0)
+            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeY = SCNNode(geometry: labelToShow)
+            labelNodeY.position = SCNVector3(0, Float(label)/unitMeasure, 0)
+            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeZ = SCNNode(geometry: labelToShow)
+            labelNodeZ.position = SCNVector3(0, 0, Float(label)/unitMeasure)
+            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
+            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(labelNodeX)
+            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(labelNodeY)
+            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(labelNodeZ)
+        }
+    }
+    
+    @IBAction func showGraphInfo(_ sender: Any) {
+        var scale = ""
+        switch unitMeasure {
+        case 1:
+            scale = "meters"
+        case 10:
+            scale = "decimeters"
+        case 100:
+            scale = "centimeters"
+        case 1000:
+            scale = "millimeters"
+        default:
+            scale = "decimeters"
+        }
+        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown)"
+        let alertController = UIAlertController(title: "Graph information", message:
+            info, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     
 }

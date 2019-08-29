@@ -22,6 +22,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     var unitMeasure: Float = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
+    var defaultPointRadius: Float = 0.03
     
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
@@ -59,6 +60,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 vc?.unit = unitMeasure
                 vc?.axesLabels = shouldAxesLabelsBeShown
                 vc?.planes = shouldPlanesBeShown
+                vc?.pointRadius = defaultPointRadius
             default:
                 print("This is not the ViewController you're looking for")
         }
@@ -180,6 +182,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             if(pointsToPlot.count > 0){
                 plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
                 plotWithFiducialMarkerButton.isEnabled = true
+                defaultPointRadius = Float(pointsToPlot[0].sizeCoefficient) as! Float
                 fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
             }
             else{
