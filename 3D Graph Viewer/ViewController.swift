@@ -19,10 +19,10 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     let defaultGColour = "52"
     let defaultBColour = "105"
     var scannedPicture = false
-    var unitMeasure: Float = 10
+    var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
-    var defaultPointRadius: Float = 0.03
+    var defaultPointRadius: Double = 0.03
     
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
@@ -182,7 +182,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             if(pointsToPlot.count > 0){
                 plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
                 plotWithFiducialMarkerButton.isEnabled = true
-                defaultPointRadius = Float(pointsToPlot[0].sizeCoefficient) as! Float
+                defaultPointRadius = Double(pointsToPlot[0].sizeCoefficient) as! Double
                 fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
             }
             else{

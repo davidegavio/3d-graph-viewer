@@ -16,8 +16,8 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
     var maxPointRadius: CGFloat = 0
-    var maxIndex: Float = 0
-    var unitMeasure: Float = 10
+    var maxIndex: Double = 0
+    var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
     
@@ -56,19 +56,21 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         }
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
-            let sphere = SCNSphere(radius: CGFloat(Float(point.sizeCoefficient) ?? 0.03))
+            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient) ?? 0.03))
+            print(type(of: point.sizeCoefficient))
+            print(CGFloat(Double(point.sizeCoefficient)!))
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
-            let tempMax = max(max(Float(point.xCoordinate)!, Float(point.yCoordinate)!), Float(point.zCoordinate)!)
+            let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
             if tempMax > maxIndex{
                 maxIndex = tempMax
             }
             let sphereNode = SCNNode(geometry: sphere)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
-            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Float(point.rColour) ?? 5)/255, green: CGFloat(Float(point.gColour) ?? 52)/255, blue: CGFloat(Float(point.bColour) ?? 105)/255, alpha: 1)
-            sphereNode.position = SCNVector3(Float(point.xCoordinate)!/unitMeasure, Float(point.yCoordinate)!/unitMeasure, Float(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
+            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
+            sphereNode.position = SCNVector3(Double(point.xCoordinate)!/unitMeasure, Double(point.yCoordinate)!/unitMeasure, Double(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
             if shouldAxesLabelsBeShown{
                 showLabels()
             }
@@ -128,12 +130,12 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             if !hits.isEmpty { // A list of hit events
                 let tappedNode = hits.first?.node // The tapped node
                 if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
-                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \((tappedNode?.position.x)! * unitMeasure); \((tappedNode?.position.y)! * unitMeasure); \((tappedNode?.position.z)! * unitMeasure)"
+                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(Double((tappedNode?.position.x)!) * unitMeasure); \(Double((tappedNode?.position.y)!) * unitMeasure); \(Double((tappedNode?.position.z)!) * unitMeasure)"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-                    textNode.position = SCNVector3(((tappedNode?.position.x)! + Float(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
+                    textNode.position = SCNVector3(Float((Double((tappedNode?.position.x)!)) + Double(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
                     augmentedRealityScatterplot.scene.rootNode.addChildNode(textNode)
                 }
@@ -145,15 +147,15 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         for label in 0...(Int(maxIndex) + 1) {
             let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
             let labelNodeX = SCNNode(geometry: labelToShow)
-            labelNodeX.position = SCNVector3(Float(label)/unitMeasure, 0, 0)
+            labelNodeX.position = SCNVector3(Double(label)/unitMeasure, 0, 0)
             labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeY = SCNNode(geometry: labelToShow)
-            labelNodeY.position = SCNVector3(0, Float(label)/unitMeasure, 0)
+            labelNodeY.position = SCNVector3(0, Double(label)/unitMeasure, 0)
             labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeZ = SCNNode(geometry: labelToShow)
-            labelNodeZ.position = SCNVector3(0, 0, Float(label)/unitMeasure)
+            labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
             labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeX)

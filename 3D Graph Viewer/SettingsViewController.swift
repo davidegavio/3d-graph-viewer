@@ -11,10 +11,10 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
     
-    var unit: Float = 10
+    var unit: Double = 10
     var planes: Bool = true
     var axesLabels: Bool = true
-    var pointRadius: Float = 0.03
+    var pointRadius: Double = 0.03
 
     @IBOutlet weak var showAxesLabels: UISwitch!
     @IBOutlet weak var showPlanes: UISwitch!
@@ -82,7 +82,7 @@ class SettingsViewController: UITableViewController {
     }
     
     @IBAction func setPointRadius(_ sender: Any) {
-        //pointRadius = pointRadiusInput.text as Float
+        //pointRadius = pointRadiusInput.text as Double
     }
     
 }
