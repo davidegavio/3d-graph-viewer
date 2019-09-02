@@ -20,6 +20,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
+    var opacity: Double = 0.3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.scene = scene
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
         augmentedRealityScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
-        print("Hello I'm AugmentedRealityCameraViewController")
+        // print("Hello I'm AugmentedRealityCameraViewController")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,14 +52,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * It also creates the pysical points and sets their attributes.
     **/
     private func plotPoints(){
-        if shouldPlanesBeShown{
-            addPlanes()
-        }
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
             let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient) ?? 0.03))
-            print(type(of: point.sizeCoefficient))
-            print(CGFloat(Double(point.sizeCoefficient)!))
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
@@ -92,27 +88,27 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             textNodeX.scale = SCNVector3(0.002,0.002,0.002)
             textNodeY.scale = SCNVector3(0.002,0.002,0.002)
             textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            //augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeX)
-            //augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeY)
-            //augmentedRealityScatterplot.scene.rootNode.addChildNode(textNodeZ)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)
+        }
+        if shouldPlanesBeShown{
+            addPlanes()
         }
     }
     
     private func addPlanes(){
-        let verticalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
-        let horizontalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
-        let sideNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
+        let verticalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
+        let horizontalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
+        let sideNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
-        verticalNode.opacity = 0.5
+        verticalNode.opacity = CGFloat(opacity)
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
         horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
-        horizontalNode.opacity = 0.5
+        horizontalNode.opacity = CGFloat(opacity)
         sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
-        sideNode.opacity = 0.5
+        sideNode.opacity = CGFloat(opacity)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(verticalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(horizontalNode)
         augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
@@ -130,7 +126,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             if !hits.isEmpty { // A list of hit events
                 let tappedNode = hits.first?.node // The tapped node
                 if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
-                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(Double((tappedNode?.position.x)!) * unitMeasure); \(Double((tappedNode?.position.y)!) * unitMeasure); \(Double((tappedNode?.position.z)!) * unitMeasure)"
+                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure))"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
                     textNode.name = "Info"
@@ -178,7 +174,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         default:
             scale = "decimeters"
         }
-        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown)"
+        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown) \nOpacity: \(opacity)"
         let alertController = UIAlertController(title: "Graph information", message:
             info, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))

@@ -14,16 +14,17 @@ class SettingsViewController: UITableViewController {
     var unit: Double = 10
     var planes: Bool = true
     var axesLabels: Bool = true
-    var pointRadius: Double = 0.03
+    var opacity: Double = 0.3
 
     @IBOutlet weak var showAxesLabels: UISwitch!
     @IBOutlet weak var showPlanes: UISwitch!
     @IBOutlet weak var unitOfMeasure: UISegmentedControl!
-    @IBOutlet weak var pointRadiusInput: UITextField!
+    @IBOutlet weak var setOpacity: UISegmentedControl!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Hello I'm SettingsViewController")
+        // print("Hello I'm SettingsViewController")
         switch unit{
         case 1000:
             unitOfMeasure.selectedSegmentIndex = 0
@@ -38,7 +39,16 @@ class SettingsViewController: UITableViewController {
         }
         showPlanes.isOn = planes
         showAxesLabels.isOn = axesLabels
-        pointRadiusInput.text = String(pointRadius)
+        switch opacity{
+        case 0.3:
+            setOpacity.selectedSegmentIndex = 0
+        case 0.5:
+            setOpacity.selectedSegmentIndex = 1
+        case 0.7:
+            setOpacity.selectedSegmentIndex = 2
+        default:
+            setOpacity.selectedSegmentIndex = 0
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,7 +63,7 @@ class SettingsViewController: UITableViewController {
         let unitSend = unit
         let axesSend = axesLabels
         let planesSend = planes
-        let pointRadiusSend = pointRadius
+        let opacitySend = opacity
     }
     
     
@@ -70,7 +80,6 @@ class SettingsViewController: UITableViewController {
             default:
                 unit = 10
             }
-        //print(unit)
     }
     
     @IBAction func showPlanesSwitch(_ sender: Any) {
@@ -81,9 +90,19 @@ class SettingsViewController: UITableViewController {
         axesLabels = showAxesLabels.isOn
     }
     
-    @IBAction func setPointRadius(_ sender: Any) {
-        //pointRadius = pointRadiusInput.text as Double
+    @IBAction func setOpacityValue(_ sender: Any) {
+        switch setOpacity.selectedSegmentIndex{
+        case 0:
+            opacity = 0.3
+        case 1:
+            opacity = 0.5
+        case 2:
+            opacity = 0.7
+        default:
+            opacity = 0.3
+        }
     }
+    
     
 }
 

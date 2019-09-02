@@ -22,7 +22,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
-    var defaultPointRadius: Double = 0.03
+    var opacity: Double = 0.3
     
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
@@ -30,6 +30,8 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     @IBOutlet weak var fileInfoLabel: UILabel!
     @IBOutlet weak var plotInOpenAirButton: UIButton!
     @IBOutlet weak var plotWithFiducialMarkerButton: UIButton!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +49,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 vc?.unitMeasure = unitMeasure
                 vc?.shouldAxesLabelsBeShown = shouldAxesLabelsBeShown
                 vc?.shouldPlanesBeShown = shouldPlanesBeShown
+                vc?.opacity = opacity
             case is AugmentedRealityFiducialMarkerViewController:
                 let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
                 vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
@@ -55,29 +58,30 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 vc?.unitMeasure = unitMeasure
                 vc?.shouldAxesLabelsBeShown = shouldAxesLabelsBeShown
                 vc?.shouldPlanesBeShown = shouldPlanesBeShown
+                vc?.opacity = opacity
             case is SettingsViewController:
                 let vc = segue.destination as? SettingsViewController
                 vc?.unit = unitMeasure
                 vc?.axesLabels = shouldAxesLabelsBeShown
                 vc?.planes = shouldPlanesBeShown
-                vc?.pointRadius = defaultPointRadius
+                vc?.opacity = opacity
             default:
                 print("This is not the ViewController you're looking for")
         }
     }
     
     @IBAction func plotButton(_ sender: Any) {
-        print("Plot button pressed!")
+        // print("Plot button pressed!")
         self.performSegue(withIdentifier: "toARCameraSegue", sender: self)
     }
     
     @IBAction func plotOnFiducialMarkerButton(_ sender: Any) {
-        print("Plotting on fiducial marker!")
+        // print("Plotting on fiducial marker!")
         self.performSegue(withIdentifier: "toARCameraFiducialMarkerSegue", sender: self)
     }
     
     @IBAction func settingsButton(_ sender: Any) {
-        print("Opening settings!")
+        // print("Opening settings!")
         self.performSegue(withIdentifier: "toSettingsViewControllerSegue", sender: self)
     }
     
@@ -87,6 +91,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 unitMeasure = senderVC.unit
                 shouldPlanesBeShown = senderVC.planes
                 shouldAxesLabelsBeShown = senderVC.axesLabels
+                opacity = senderVC.opacity
             }
         }
     }
@@ -102,7 +107,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     */
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL){
         let fileUrl = url as URL
-        print("Import result: \(fileUrl)")
+        // print("Import result: \(fileUrl)")
         // In the following do/try/catch block the file is converted into a string
         var wholeFile = ""
         do{
@@ -115,7 +120,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {
-        print("View was cancelled")
+        // print("View was cancelled")
         dismiss(animated: true, completion: nil)
     }
     
@@ -182,7 +187,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             if(pointsToPlot.count > 0){
                 plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
                 plotWithFiducialMarkerButton.isEnabled = true
-                defaultPointRadius = Double(pointsToPlot[0].sizeCoefficient) as! Double
                 fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
             }
             else{

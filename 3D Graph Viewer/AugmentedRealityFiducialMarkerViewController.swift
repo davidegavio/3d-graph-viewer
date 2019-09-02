@@ -31,14 +31,11 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var maxIndex: Double = 0
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
+    var opacity: Double = 0.3
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(shouldPlanesBeShown)
-        if(scannedPicture == true){
-            shouldScatterplotBePlacedUponImage = true
-            //addReference()
-        }
+        shouldScatterplotBePlacedUponImage = true
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
         augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
@@ -47,7 +44,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
         augmentedRealityFiducialMarkerScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         originNode = SCNNode()
-        //print("Hello I'm AugmentedRealityFiducialMarkerViewController")
+        // ("Hello I'm AugmentedRealityFiducialMarkerViewController")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,9 +120,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             textNodeX.scale = SCNVector3(0.002,0.002,0.002)
             textNodeY.scale = SCNVector3(0.002,0.002,0.002)
             textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            //originNode.addChildNode(textNodeX)
-            //originNode.addChildNode(textNodeY)
-            //originNode.addChildNode(textNodeZ)
             sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
             i += 1
             originNode.addChildNode(sphereNode)
@@ -133,21 +127,20 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     }
     
     private func addPlanes(){
-        //print("Adding planes")
-        let verticalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
-        let horizontalNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
-        let sideNode = SCNNode(geometry: SCNPlane(width: 3, height: 3))
+        let verticalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
+        let horizontalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
+        let sideNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
-        verticalNode.opacity = 0.5
+        verticalNode.opacity = CGFloat(opacity)
         verticalNode.geometry?.firstMaterial?.isDoubleSided = true
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
         horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
-        horizontalNode.opacity = 0.5
+        horizontalNode.opacity = CGFloat(opacity)
         sideNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
-        sideNode.opacity = 0.5
+        sideNode.opacity = CGFloat(opacity)
         originNode.addChildNode(verticalNode)
         originNode.addChildNode(horizontalNode)
         originNode.addChildNode(sideNode)
@@ -158,21 +151,21 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
      * Some parts of iOS workflow is handled by Objective-C code.
      **/
     @objc func handleTap(rec: UITapGestureRecognizer){
-        augmentedRealityFiducialMarkerScatterplot.scene.rootNode.childNodes.filter({$0.name == "Info"}).forEach({$0.removeFromParentNode()}) // Removing previous information text in order to have just one visible
+        originNode.childNodes.filter({$0.name == "Info"}).forEach({$0.removeFromParentNode()}) // Removing previous information text in order to have just one visible
         if rec.state == .ended { // When the tap event ends
             let location: CGPoint = rec.location(in: augmentedRealityFiducialMarkerScatterplot) // Gets the location of the tap
             let hits = self.augmentedRealityFiducialMarkerScatterplot.hitTest(location, options: nil)
             if !hits.isEmpty { // A list of hit events
                 let tappedNode = hits.first?.node // The tapped node
                 if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
-                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(tappedNode?.position.x ?? -1); \(tappedNode?.position.y ?? -1); \(tappedNode?.position.y ?? -1)"
+                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure))"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(Float((Double((tappedNode?.position.x)!)) + Double(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
-                    augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(textNode)
+                    originNode.addChildNode(textNode)
                 }
             }
         }
@@ -183,7 +176,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         let arImage = ARReferenceImage(cgImage, orientation: CGImagePropertyOrientation.upMirrored, physicalWidth: CGFloat(cgImage.width))
         arImage.name = "Custom ARImage"
         customReferenceSet.insert(arImage)
-        print("Added ARReferenceImage: \(arImage)")
+        // print("Added ARReferenceImage: \(arImage)")
     }
     
     func showLabels(){
@@ -201,9 +194,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
             labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(labelNodeX)
-            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(labelNodeY)
-            augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(labelNodeZ)
+            originNode.addChildNode(labelNodeX)
+            originNode.addChildNode(labelNodeY)
+            originNode.addChildNode(labelNodeZ)
         }
     }
     
@@ -221,7 +214,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         default:
             scale = "decimeters"
         }
-        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown)"
+        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown) \nOpacity: \(opacity)"
         let alertController = UIAlertController(title: "Graph information", message:
             info, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
