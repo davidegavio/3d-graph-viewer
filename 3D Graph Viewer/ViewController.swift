@@ -22,7 +22,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
-    var opacity: Double = 0.3
+    var opacity: Double = 0.5
     
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
@@ -35,6 +35,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.isIdleTimerDisabled = true
         plotInOpenAirButton.isEnabled = false // Plotting buttons are disabled until a file is chosen
         plotWithFiducialMarkerButton.isEnabled = false
         taskInAction.isHidden = true

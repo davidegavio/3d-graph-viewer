@@ -40,11 +40,11 @@ class SettingsViewController: UITableViewController {
         showPlanes.isOn = planes
         showAxesLabels.isOn = axesLabels
         switch opacity{
-        case 0.3:
+        case 0.1:
             setOpacity.selectedSegmentIndex = 0
         case 0.5:
             setOpacity.selectedSegmentIndex = 1
-        case 0.7:
+        case 1:
             setOpacity.selectedSegmentIndex = 2
         default:
             setOpacity.selectedSegmentIndex = 0
@@ -93,13 +93,13 @@ class SettingsViewController: UITableViewController {
     @IBAction func setOpacityValue(_ sender: Any) {
         switch setOpacity.selectedSegmentIndex{
         case 0:
-            opacity = 0.3
+            opacity = 0.1
         case 1:
             opacity = 0.5
         case 2:
-            opacity = 0.7
+            opacity = 1
         default:
-            opacity = 0.3
+            opacity = 0.1
         }
     }
     

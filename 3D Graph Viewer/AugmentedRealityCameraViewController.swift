@@ -20,7 +20,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
-    var opacity: Double = 0.3
+    var opacity: Double = 0.5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,6 +101,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         let sideNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
         verticalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         verticalNode.opacity = CGFloat(opacity)
+        verticalNode.geometry?.firstMaterial?.isDoubleSided = true
         horizontalNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "grid")
         horizontalNode.geometry?.firstMaterial?.isDoubleSided = true
         horizontalNode.eulerAngles = SCNVector3(90.toRadians, 0, 0)
@@ -126,13 +127,16 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             if !hits.isEmpty { // A list of hit events
                 let tappedNode = hits.first?.node // The tapped node
                 if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
-                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure))"
+                    let text = "x: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \ny: \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \nz: \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure));"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(Float((Double((tappedNode?.position.x)!)) + Double(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
+                    //if let rotate = augmentedRealityScatterplot.session.currentFrame?.camera.transform {
+                      //  textNode.simdTransform = rotate
+                    //}
                     augmentedRealityScatterplot.scene.rootNode.addChildNode(textNode)
                 }
             }
@@ -144,14 +148,17 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
             let labelNodeX = SCNNode(geometry: labelToShow)
             labelNodeX.position = SCNVector3(Double(label)/unitMeasure, 0, 0)
+            labelNodeX.position = SCNVector3(-Double(label)/unitMeasure, 0, 0)
             labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeY = SCNNode(geometry: labelToShow)
             labelNodeY.position = SCNVector3(0, Double(label)/unitMeasure, 0)
+            labelNodeY.position = SCNVector3(0, -Double(label)/unitMeasure, 0)
             labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeZ = SCNNode(geometry: labelToShow)
             labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
+            labelNodeZ.position = SCNVector3(0, 0, -Double(label)/unitMeasure)
             labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
             augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeX)
