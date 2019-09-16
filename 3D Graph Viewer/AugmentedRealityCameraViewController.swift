@@ -21,16 +21,19 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var shouldPlanesBeShown = true
     var shouldAxesLabelsBeShown = true
     var opacity: Double = 0.5
+    var originNode: SCNNode!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         augmentedRealityScatterplot.delegate = self
         augmentedRealityScatterplot.showsStatistics = true
-        augmentedRealityScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
+        //augmentedRealityScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityScatterplot.scene = scene
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
         augmentedRealityScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
+        originNode = SCNNode()
+        originNode.position = SCNVector3(0, -0.2, -1)
         // print("Hello I'm AugmentedRealityCameraViewController")
     }
     
@@ -54,7 +57,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     private func plotPoints(){
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
-            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient) ?? 0.03))
+            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
@@ -69,6 +72,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             sphereNode.position = SCNVector3(Double(point.xCoordinate)!/unitMeasure, Double(point.yCoordinate)!/unitMeasure, Double(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
             if shouldAxesLabelsBeShown{
                 showLabels()
+                showNegativeLabels()
             }
             let coordX = "\(sphereNode.position.x)"
             let coordY = "\(sphereNode.position.y)"
@@ -88,7 +92,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             textNodeX.scale = SCNVector3(0.002,0.002,0.002)
             textNodeY.scale = SCNVector3(0.002,0.002,0.002)
             textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(sphereNode)
+            originNode.addChildNode(sphereNode)
         }
         if shouldPlanesBeShown{
             addPlanes()
@@ -110,9 +114,11 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         sideNode.eulerAngles = SCNVector3(0, 90.toRadians, 0)
         sideNode.geometry?.firstMaterial?.isDoubleSided = true
         sideNode.opacity = CGFloat(opacity)
-        augmentedRealityScatterplot.scene.rootNode.addChildNode(verticalNode)
-        augmentedRealityScatterplot.scene.rootNode.addChildNode(horizontalNode)
-        augmentedRealityScatterplot.scene.rootNode.addChildNode(sideNode)
+        originNode.addChildNode(verticalNode)
+        originNode.addChildNode(horizontalNode)
+        originNode.addChildNode(sideNode)
+        augmentedRealityScatterplot.scene.rootNode.addChildNode(originNode)
+        
     }
     
     /**
@@ -120,7 +126,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * Some parts of iOS workflow is handled by Objective-C code.
     **/
     @objc func handleTap(rec: UITapGestureRecognizer){
-        augmentedRealityScatterplot.scene.rootNode.childNodes.filter({$0.name == "Info"}).forEach({$0.removeFromParentNode()}) // Removing previous information text in order to have just one visible
+        originNode.childNodes.filter({$0.name == "Info"}).forEach({$0.removeFromParentNode()}) // Removing previous information text in order to have just one visible
         if rec.state == .ended { // When the tap event ends
             let location: CGPoint = rec.location(in: augmentedRealityScatterplot) // Gets the location of the tap
             let hits = self.augmentedRealityScatterplot.hitTest(location, options: nil)
@@ -137,7 +143,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                     //if let rotate = augmentedRealityScatterplot.session.currentFrame?.camera.transform {
                       //  textNode.simdTransform = rotate
                     //}
-                    augmentedRealityScatterplot.scene.rootNode.addChildNode(textNode)
+                    originNode.addChildNode(textNode)
                 }
             }
         }
@@ -148,22 +154,40 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
             let labelNodeX = SCNNode(geometry: labelToShow)
             labelNodeX.position = SCNVector3(Double(label)/unitMeasure, 0, 0)
-            labelNodeX.position = SCNVector3(-Double(label)/unitMeasure, 0, 0)
             labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeY = SCNNode(geometry: labelToShow)
             labelNodeY.position = SCNVector3(0, Double(label)/unitMeasure, 0)
-            labelNodeY.position = SCNVector3(0, -Double(label)/unitMeasure, 0)
             labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeZ = SCNNode(geometry: labelToShow)
             labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
+            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
+            originNode.addChildNode(labelNodeX)
+            originNode.addChildNode(labelNodeY)
+            originNode.addChildNode(labelNodeZ)
+        }
+    }
+    
+    func showNegativeLabels(){
+        for label in 0...(Int(maxIndex) + 1) {
+            let labelToShow = SCNText(string: String(-label), extrusionDepth: CGFloat(1))
+            let labelNodeX = SCNNode(geometry: labelToShow)
+            labelNodeX.position = SCNVector3(-Double(label)/unitMeasure, 0, 0)
+            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeY = SCNNode(geometry: labelToShow)
+            labelNodeY.position = SCNVector3(0, -Double(label)/unitMeasure, 0)
+            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeZ = SCNNode(geometry: labelToShow)
             labelNodeZ.position = SCNVector3(0, 0, -Double(label)/unitMeasure)
             labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeX)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeY)
-            augmentedRealityScatterplot.scene.rootNode.addChildNode(labelNodeZ)
+            originNode.addChildNode(labelNodeX)
+            originNode.addChildNode(labelNodeY)
+            originNode.addChildNode(labelNodeZ)
         }
     }
     
