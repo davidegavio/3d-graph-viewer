@@ -137,7 +137,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
-            imagePicker.sourceType = .savedPhotosAlbum
+            imagePicker.sourceType = .camera
             imagePicker.allowsEditing = false
             present(imagePicker, animated: true, completion: nil)
         }

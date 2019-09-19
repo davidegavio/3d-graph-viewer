@@ -38,7 +38,13 @@ class SettingsViewController: UITableViewController {
             unitOfMeasure.selectedSegmentIndex = 2
         }
         showPlanes.isOn = planes
-        showAxesLabels.isOn = axesLabels
+        if(showPlanes.isOn){
+            showAxesLabels.isEnabled = true
+            showAxesLabels.isOn = axesLabels
+        }else{
+            showAxesLabels.isEnabled = false
+            showAxesLabels.isOn = false
+        }
         switch opacity{
         case 0.1:
             setOpacity.selectedSegmentIndex = 0
@@ -84,6 +90,11 @@ class SettingsViewController: UITableViewController {
     
     @IBAction func showPlanesSwitch(_ sender: Any) {
         planes = showPlanes.isOn
+        showAxesLabels.isEnabled = true
+        if(!showPlanes.isOn){
+            showAxesLabels.isEnabled = false
+            showAxesLabels.isOn = false
+        }
     }
     
     @IBAction func showAxesLabelsSwitch(_ sender: Any) {

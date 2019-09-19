@@ -91,13 +91,13 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xF2-Rk-VNv">
                                 <rect key="frame" x="20" y="702" width="374" height="30"/>
-                                <state key="normal" title="Scan from picture"/>
+                                <state key="normal" title="Read from QRCode"/>
                                 <connections>
                                     <action selector="scanFromPictureButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JbM-dW-Wdr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Lf-88-Zmd">
-                                <rect key="frame" x="130.66666666666666" y="846" width="152.99999999999997" height="30"/>
+                                <rect key="frame" x="131" y="816" width="152.99999999999997" height="30"/>
                                 <state key="normal" title="Plot on fiducial marker"/>
                                 <connections>
                                     <action selector="plotOnFiducialMarkerButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RMC-fi-xSh"/>
@@ -114,7 +114,7 @@
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="xF2-Rk-VNv" secondAttribute="leading" id="H00-ba-nhE"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="H78-sb-xyf"/>
                             <constraint firstItem="VH3-lD-aOc" firstAttribute="trailing" secondItem="xF2-Rk-VNv" secondAttribute="trailing" id="Wah-AL-OOD"/>
-                            <constraint firstAttribute="bottom" secondItem="7Lf-88-Zmd" secondAttribute="bottom" constant="20" symbolic="YES" id="YAb-hk-oHQ"/>
+                            <constraint firstAttribute="bottom" secondItem="7Lf-88-Zmd" secondAttribute="bottom" constant="50" id="YAb-hk-oHQ"/>
                             <constraint firstItem="7Lf-88-Zmd" firstAttribute="centerX" secondItem="D9s-u0-lRS" secondAttribute="centerX" id="Yd7-FU-WzT"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="top" secondItem="xF2-Rk-VNv" secondAttribute="bottom" constant="8" symbolic="YES" id="eTf-Ij-DS8"/>
                             <constraint firstItem="VH3-lD-aOc" firstAttribute="bottom" secondItem="gyN-so-sUy" secondAttribute="bottom" id="n0A-po-sv7"/>

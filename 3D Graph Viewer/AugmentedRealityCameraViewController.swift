@@ -57,7 +57,8 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     private func plotPoints(){
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
-            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
+            //let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
+            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!))
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
@@ -136,13 +137,13 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                     let text = "x: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \ny: \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \nz: \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure));"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
+                    let billboardConstraint = SCNBillboardConstraint()
+                    billboardConstraint.freeAxes = [.X, .Y, .Z]
+                    textNode.constraints = [billboardConstraint] // Keeps info label facing the camera
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(Float((Double((tappedNode?.position.x)!)) + Double(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
                     textNode.scale = SCNVector3(0.002,0.002,0.002)
-                    //if let rotate = augmentedRealityScatterplot.session.currentFrame?.camera.transform {
-                      //  textNode.simdTransform = rotate
-                    //}
                     originNode.addChildNode(textNode)
                 }
             }

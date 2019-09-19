@@ -38,12 +38,12 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         shouldScatterplotBePlacedUponImage = true
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
-        augmentedRealityFiducialMarkerScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityFiducialMarkerScatterplot.scene = scene
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
         augmentedRealityFiducialMarkerScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         originNode = SCNNode()
+        originNode.position = SCNVector3(0, -0.2, -1)
         // ("Hello I'm AugmentedRealityFiducialMarkerViewController")
     }
     
@@ -98,6 +98,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             }
             if shouldAxesLabelsBeShown{
                 showLabels()
+                showNegativeLabels()
             }
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
@@ -158,9 +159,12 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             if !hits.isEmpty { // A list of hit events
                 let tappedNode = hits.first?.node // The tapped node
                 if tappedNode?.geometry is SCNSphere{ // Checking if the tapped node is actually the point, in order to not print useless information like planes infos
-                    let text = "\(tappedNode!.name ?? "No name") \nRadius: \(tappedNode?.geometry?.value(forKey: "radius") ?? -1) \nPosition: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure))"
+                    let text = "x: \(String(format: "%.2f", Double((tappedNode?.position.x)!) * unitMeasure)); \ny: \(String(format: "%.2f", Double((tappedNode?.position.y)!) * unitMeasure)); \nz: \(String(format: "%.2f", Double((tappedNode?.position.z)!) * unitMeasure));"
                     let textToShow = SCNText(string: text, extrusionDepth: CGFloat(1))
                     let textNode = SCNNode(geometry: textToShow)
+                    let billboardConstraint = SCNBillboardConstraint()
+                    billboardConstraint.freeAxes = [.X, .Y, .Z]
+                    textNode.constraints = [billboardConstraint]
                     textNode.name = "Info"
                     textNode.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
                     textNode.position = SCNVector3(Float((Double((tappedNode?.position.x)!)) + Double(maxPointRadius)), (tappedNode?.position.y)!, (tappedNode?.position.z)!)
@@ -192,6 +196,27 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
             let labelNodeZ = SCNNode(geometry: labelToShow)
             labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
+            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
+            originNode.addChildNode(labelNodeX)
+            originNode.addChildNode(labelNodeY)
+            originNode.addChildNode(labelNodeZ)
+        }
+    }
+    
+    func showNegativeLabels(){
+        for label in 0...(Int(maxIndex) + 1) {
+            let labelToShow = SCNText(string: String(-label), extrusionDepth: CGFloat(1))
+            let labelNodeX = SCNNode(geometry: labelToShow)
+            labelNodeX.position = SCNVector3(-Double(label)/unitMeasure, 0, 0)
+            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeY = SCNNode(geometry: labelToShow)
+            labelNodeY.position = SCNVector3(0, -Double(label)/unitMeasure, 0)
+            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
+            let labelNodeZ = SCNNode(geometry: labelToShow)
+            labelNodeZ.position = SCNVector3(0, 0, -Double(label)/unitMeasure)
             labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
             originNode.addChildNode(labelNodeX)
