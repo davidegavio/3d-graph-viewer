@@ -26,8 +26,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        taskInAction.isHidden = true
         augmentedRealityScatterplot.delegate = self
-        augmentedRealityScatterplot.showsStatistics = true
+        //augmentedRealityScatterplot.showsStatistics = true
         //augmentedRealityScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityScatterplot.scene = scene
@@ -56,8 +57,8 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * It also creates the pysical points and sets their attributes.
     **/
     private func plotPoints(){
-        self.taskInAction.isHidden = false // Shows the loading wheel
-        self.taskInAction.startAnimating() // Animates the loading wheel
+        //self.taskInAction.isHidden = false // Shows the loading wheel
+        //self.taskInAction.startAnimating() // Animates the loading wheel
         DispatchQueue.global(qos: .userInitiated).sync { [weak self] in // Adding points in separate thread
             guard let self = self else {
                 return
@@ -103,12 +104,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                     addPlanes()
                 }
                 augmentedRealityScatterplot.scene.rootNode.addChildNode(originNode)
-                self.taskInAction.stopAnimating() // Stops the loading wheel animation
-                self.taskInAction.isHidden = true
             }
-            
-            
         }
+        //self.taskInAction.stopAnimating() // Stops the loading wheel animation
+        //self.taskInAction.isHidden = true
         
     }
     
