@@ -48,7 +48,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 let vc = segue.destination as? AugmentedRealityCameraViewController
                 vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
                 vc?.unitMeasure = unitMeasure
-                vc?.shouldAxesLabelsBeShown = shouldAxesLabelsBeShown
                 vc?.shouldPlanesBeShown = shouldPlanesBeShown
                 vc?.opacity = opacity
             case is AugmentedRealityFiducialMarkerViewController:
@@ -57,13 +56,11 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 vc?.pickedImage = tempImage
                 vc?.scannedPicture = scannedPicture
                 vc?.unitMeasure = unitMeasure
-                vc?.shouldAxesLabelsBeShown = shouldAxesLabelsBeShown
                 vc?.shouldPlanesBeShown = shouldPlanesBeShown
                 vc?.opacity = opacity
             case is SettingsViewController:
                 let vc = segue.destination as? SettingsViewController
                 vc?.unit = unitMeasure
-                vc?.axesLabels = shouldAxesLabelsBeShown
                 vc?.planes = shouldPlanesBeShown
                 vc?.opacity = opacity
             default:
@@ -91,7 +88,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             if let senderVC = sender.source as? SettingsViewController{
                 unitMeasure = senderVC.unit
                 shouldPlanesBeShown = senderVC.planes
-                shouldAxesLabelsBeShown = senderVC.axesLabels
                 opacity = senderVC.opacity
             }
         }
@@ -196,6 +192,13 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
             taskInAction.stopAnimating() // Stops the loading wheel animation
             
         }
+        if pointsToPlot.count > 1500{
+            let alertController = UIAlertController(title: "Warning!", message:
+                "Current amount of points can cause crashes due to memory saturation.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
     }
     
 }

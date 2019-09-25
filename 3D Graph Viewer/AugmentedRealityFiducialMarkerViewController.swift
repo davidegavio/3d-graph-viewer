@@ -30,7 +30,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var unitMeasure: Double = 10
     var maxIndex: Double = 0
     var shouldPlanesBeShown = true
-    var shouldAxesLabelsBeShown = true
     var opacity: Double = 0.3
     
     override func viewDidLoad() {
@@ -88,17 +87,13 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     private func placeScatterplotAt(position: simd_float4x4){
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
-            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient) ?? 0.03))
+            let sphere = SCNSphere(radius: CGFloat(calculateDouble(decimal: point.sizeCoefficient)))
             if(sphere.radius > maxPointRadius){
                 maxPointRadius = sphere.radius
             }
             let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
             if tempMax > maxIndex{
                 maxIndex = tempMax
-            }
-            if shouldAxesLabelsBeShown{
-                showLabels()
-                showNegativeLabels()
             }
             let sphereNode = SCNNode(geometry: sphere)
             sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
@@ -125,6 +120,19 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             i += 1
             originNode.addChildNode(sphereNode)
             }
+    }
+    
+    private func calculateDouble(decimal: String) -> Double{
+        let number = Double(decimal)!
+        let zeros: Int = (decimal.split(separator: ".")[0]).count
+        var divider: String = "1"
+        if !decimal.starts(with: "0"){
+            for _ in 0...zeros{
+                divider = divider + "0"
+            }
+        }
+        let doubleD = Double(divider)!
+        return Double(number/doubleD)
     }
     
     private func addPlanes(){
@@ -239,7 +247,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         default:
             scale = "decimeters"
         }
-        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown) \nOpacity: \(opacity)"
+        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown)\nOpacity: \(opacity)"
         let alertController = UIAlertController(title: "Graph information", message:
             info, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))

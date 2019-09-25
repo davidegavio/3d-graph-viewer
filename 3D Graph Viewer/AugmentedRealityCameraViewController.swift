@@ -12,6 +12,8 @@ import ARKit
 class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet weak var augmentedRealityScatterplot: ARSCNView!
+
+    @IBOutlet weak var taskInAction: UIActivityIndicatorView!
     let arWorldTrackingConfiguration = ARWorldTrackingConfiguration()
     var pointsToPlot: [Point] = []
     var sphereNodes: [SCNNode] = []
@@ -19,7 +21,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     var maxIndex: Double = 0
     var unitMeasure: Double = 10
     var shouldPlanesBeShown = true
-    var shouldAxesLabelsBeShown = true
     var opacity: Double = 0.5
     var originNode: SCNNode!
     
@@ -55,49 +56,73 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     * It also creates the pysical points and sets their attributes.
     **/
     private func plotPoints(){
-        var i = 0 // Variable used to identify sequentially a sphere inside the array
-        for point in pointsToPlot{
-            //let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
-            let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!))
-            if(sphere.radius > maxPointRadius){
-                maxPointRadius = sphere.radius
+        self.taskInAction.isHidden = false // Shows the loading wheel
+        self.taskInAction.startAnimating() // Animates the loading wheel
+        DispatchQueue.global(qos: .userInitiated).sync { [weak self] in // Adding points in separate thread
+            guard let self = self else {
+                return
             }
-            let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
-            if tempMax > maxIndex{
-                maxIndex = tempMax
+            do{
+                var i = 0 // Variable used to identify sequentially a sphere inside the array
+                for point in pointsToPlot{
+                    //let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
+                    let sphere = SCNSphere(radius: CGFloat(calculateDouble(decimal: point.sizeCoefficient)))
+                    if(sphere.radius > maxPointRadius){
+                        maxPointRadius = sphere.radius
+                    }
+                    let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
+                    if tempMax > maxIndex{
+                        maxIndex = tempMax
+                    }
+                    let sphereNode = SCNNode(geometry: sphere)
+                    sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
+                    i += 1
+                    sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
+                    sphereNode.position = SCNVector3(Double(point.xCoordinate)!/unitMeasure, Double(point.yCoordinate)!/unitMeasure, Double(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
+                    let coordX = "\(sphereNode.position.x)"
+                    let coordY = "\(sphereNode.position.y)"
+                    let coordZ = "\(sphereNode.position.z)"
+                    let textX = SCNText(string: coordX, extrusionDepth: CGFloat(1))
+                    let textY = SCNText(string: coordY, extrusionDepth: CGFloat(1))
+                    let textZ = SCNText(string: coordZ, extrusionDepth: CGFloat(1))
+                    let textNodeX = SCNNode(geometry: textX)
+                    let textNodeY = SCNNode(geometry: textY)
+                    let textNodeZ = SCNNode(geometry: textZ)
+                    textNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+                    textNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+                    textNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
+                    textNodeX.position = SCNVector3(x: sphereNode.position.x, y: 0, z: 0)
+                    textNodeY.position = SCNVector3(x: 0, y: sphereNode.position.y, z: 0)
+                    textNodeZ.position = SCNVector3(x: 0, y: 0, z: sphereNode.position.z)
+                    textNodeX.scale = SCNVector3(0.002,0.002,0.002)
+                    textNodeY.scale = SCNVector3(0.002,0.002,0.002)
+                    textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
+                    originNode.addChildNode(sphereNode)
+                }
+                if shouldPlanesBeShown{
+                    addPlanes()
+                }
+                augmentedRealityScatterplot.scene.rootNode.addChildNode(originNode)
+                self.taskInAction.stopAnimating() // Stops the loading wheel animation
+                self.taskInAction.isHidden = true
             }
-            let sphereNode = SCNNode(geometry: sphere)
-            sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
-            i += 1
-            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
-            sphereNode.position = SCNVector3(Double(point.xCoordinate)!/unitMeasure, Double(point.yCoordinate)!/unitMeasure, Double(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
-            if shouldAxesLabelsBeShown{
-                showLabels()
-                showNegativeLabels()
-            }
-            let coordX = "\(sphereNode.position.x)"
-            let coordY = "\(sphereNode.position.y)"
-            let coordZ = "\(sphereNode.position.z)"
-            let textX = SCNText(string: coordX, extrusionDepth: CGFloat(1))
-            let textY = SCNText(string: coordY, extrusionDepth: CGFloat(1))
-            let textZ = SCNText(string: coordZ, extrusionDepth: CGFloat(1))
-            let textNodeX = SCNNode(geometry: textX)
-            let textNodeY = SCNNode(geometry: textY)
-            let textNodeZ = SCNNode(geometry: textZ)
-            textNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-            textNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-            textNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-            textNodeX.position = SCNVector3(x: sphereNode.position.x, y: 0, z: 0)
-            textNodeY.position = SCNVector3(x: 0, y: sphereNode.position.y, z: 0)
-            textNodeZ.position = SCNVector3(x: 0, y: 0, z: sphereNode.position.z)
-            textNodeX.scale = SCNVector3(0.002,0.002,0.002)
-            textNodeY.scale = SCNVector3(0.002,0.002,0.002)
-            textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            originNode.addChildNode(sphereNode)
+            
+            
         }
-        if shouldPlanesBeShown{
-            addPlanes()
+        
+    }
+    
+    private func calculateDouble(decimal: String) -> Double{
+        let number = Double(decimal)!
+        let zeros: Int = (decimal.split(separator: ".")[0]).count
+        var divider: String = "1"
+        if !decimal.starts(with: "0"){
+            for _ in 0...zeros{
+                divider = divider + "0"
+            }
         }
+        let doubleD = Double(divider)!
+        return Double(number/doubleD)
     }
     
     private func addPlanes(){
@@ -118,7 +143,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         originNode.addChildNode(verticalNode)
         originNode.addChildNode(horizontalNode)
         originNode.addChildNode(sideNode)
-        augmentedRealityScatterplot.scene.rootNode.addChildNode(originNode)
         
     }
     
@@ -150,6 +174,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         }
     }
     
+    /*
     func showLabels(){
         for label in 0...(Int(maxIndex) + 1) {
             let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
@@ -171,6 +196,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         }
     }
     
+    
     func showNegativeLabels(){
         for label in 0...(Int(maxIndex) + 1) {
             let labelToShow = SCNText(string: String(-label), extrusionDepth: CGFloat(1))
@@ -190,7 +216,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             originNode.addChildNode(labelNodeY)
             originNode.addChildNode(labelNodeZ)
         }
-    }
+    }*/
     
     @IBAction func showGraphInfo(_ sender: Any) {
         var scale = ""
@@ -206,7 +232,7 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         default:
             scale = "decimeters"
         }
-        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nAxes labels: \(shouldAxesLabelsBeShown) \nOpacity: \(opacity)"
+        let info = "Scale: \(scale) \nPlanes: \(shouldPlanesBeShown) \nOpacity: \(opacity)"
         let alertController = UIAlertController(title: "Graph information", message:
             info, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))

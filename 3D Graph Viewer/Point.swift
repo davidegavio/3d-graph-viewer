@@ -34,7 +34,7 @@ struct Point {
         self.rColour = valuesArray[3]
         self.gColour = valuesArray[4]
         self.bColour = valuesArray[5]
-        self.sizeCoefficient = valuesArray[6]
+        self.sizeCoefficient = valuesArray[6].filter{ !$0.isNewline }
     }
     
     

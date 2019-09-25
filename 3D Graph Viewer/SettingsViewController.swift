@@ -13,10 +13,8 @@ class SettingsViewController: UITableViewController {
     
     var unit: Double = 10
     var planes: Bool = true
-    var axesLabels: Bool = true
     var opacity: Double = 0.3
 
-    @IBOutlet weak var showAxesLabels: UISwitch!
     @IBOutlet weak var showPlanes: UISwitch!
     @IBOutlet weak var unitOfMeasure: UISegmentedControl!
     @IBOutlet weak var setOpacity: UISegmentedControl!
@@ -38,13 +36,6 @@ class SettingsViewController: UITableViewController {
             unitOfMeasure.selectedSegmentIndex = 2
         }
         showPlanes.isOn = planes
-        if(showPlanes.isOn){
-            showAxesLabels.isEnabled = true
-            showAxesLabels.isOn = axesLabels
-        }else{
-            showAxesLabels.isEnabled = false
-            showAxesLabels.isOn = false
-        }
         switch opacity{
         case 0.1:
             setOpacity.selectedSegmentIndex = 0
@@ -67,7 +58,6 @@ class SettingsViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let unitSend = unit
-        let axesSend = axesLabels
         let planesSend = planes
         let opacitySend = opacity
     }
@@ -90,15 +80,6 @@ class SettingsViewController: UITableViewController {
     
     @IBAction func showPlanesSwitch(_ sender: Any) {
         planes = showPlanes.isOn
-        showAxesLabels.isEnabled = true
-        if(!showPlanes.isOn){
-            showAxesLabels.isEnabled = false
-            showAxesLabels.isOn = false
-        }
-    }
-    
-    @IBAction func showAxesLabelsSwitch(_ sender: Any) {
-        axesLabels = showAxesLabels.isOn
     }
     
     @IBAction func setOpacityValue(_ sender: Any) {
