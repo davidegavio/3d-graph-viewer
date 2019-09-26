@@ -36,7 +36,7 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         super.viewDidLoad()
         shouldScatterplotBePlacedUponImage = true
         augmentedRealityFiducialMarkerScatterplot.delegate = self
-        augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
+        //augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
         let scene = SCNScene()
         augmentedRealityFiducialMarkerScatterplot.scene = scene
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer
@@ -64,6 +64,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         manageSceneStateChanges(withAnchor: anchor)
     }
     
+    /**
+     * Calculates the marker position in order to place the graph over it.
+     */
     private func manageSceneStateChanges(withAnchor anchor: ARAnchor){
         if let imageAnchor = anchor as? ARImageAnchor{
             lastImagePosition = imageAnchor.transform
@@ -84,6 +87,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         }
     }
     
+    /**
+     * Actually generates and place the points.
+     */
     private func placeScatterplotAt(position: simd_float4x4){
         var i = 0 // Variable used to identify sequentially a sphere inside the array
         for point in pointsToPlot{
@@ -122,6 +128,10 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             }
     }
     
+    /**
+     * Calculates the divider for the point size.
+     * If the size is too big it gets divided in order to obtain a smaller one.
+     */
     private func calculateDouble(decimal: String) -> Double{
         let number = Double(decimal)!
         let zeros: Int = (decimal.split(separator: ".")[0]).count
@@ -135,6 +145,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         return Double(number/doubleD)
     }
     
+    /**
+     * Adds the planes to the view.
+     */
     private func addPlanes(){
         let verticalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
         let horizontalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
@@ -233,6 +246,9 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         }
     }
     
+    /**
+     * Presents an info alert with graph information.
+     */
     @IBAction func showGraphInfo(_ sender: Any) {
         var scale = ""
         switch unitMeasure {

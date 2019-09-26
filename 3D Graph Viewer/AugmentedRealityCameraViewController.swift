@@ -36,7 +36,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         augmentedRealityScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         originNode = SCNNode()
         originNode.position = SCNVector3(0, -0.2, -1)
-        // print("Hello I'm AugmentedRealityCameraViewController")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,9 +52,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
     }
     
     /**
-    * This method plots the points inherited from ViewController.
-    * It also creates the pysical points and sets their attributes.
-    **/
+     * This method plots the points inherited from ViewController.
+     * It also creates the pysical points and sets their attributes.
+     */
     private func plotPoints(){
         //self.taskInAction.isHidden = false // Shows the loading wheel
         //self.taskInAction.startAnimating() // Animates the loading wheel
@@ -111,6 +110,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         
     }
     
+    /**
+     * Calculates the divider for the point size.
+     * If the size is too big it gets divided in order to obtain a smaller one.
+     */
     private func calculateDouble(decimal: String) -> Double{
         let number = Double(decimal)!
         let zeros: Int = (decimal.split(separator: ".")[0]).count
@@ -124,6 +127,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         return Double(number/doubleD)
     }
     
+    
+    /**
+     * Adds the planes to the view.
+     */
     private func addPlanes(){
         let verticalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
         let horizontalNode = SCNNode(geometry: SCNPlane(width: CGFloat((maxIndex+1)/5), height: CGFloat((maxIndex+1)/5)))
@@ -217,6 +224,10 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         }
     }*/
     
+    
+    /**
+     * Presents an info alert with graph information.
+     */
     @IBAction func showGraphInfo(_ sender: Any) {
         var scale = ""
         switch unitMeasure {

@@ -26,7 +26,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     
     
     @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
-    @IBOutlet weak var pointsTableView: UITableView!
     @IBOutlet weak var fileInfoLabel: UILabel!
     @IBOutlet weak var plotInOpenAirButton: UIButton!
     @IBOutlet weak var plotWithFiducialMarkerButton: UIButton!
@@ -35,7 +34,7 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.isIdleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true // Option to prevent the screen to become dark
         plotInOpenAirButton.isEnabled = false // Plotting buttons are disabled until a file is chosen
         plotWithFiducialMarkerButton.isEnabled = false
         taskInAction.isHidden = true
@@ -46,13 +45,13 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         switch segue.destination {
             case is AugmentedRealityCameraViewController:
                 let vc = segue.destination as? AugmentedRealityCameraViewController
-                vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityCameraViewController
+                vc?.pointsToPlot = pointsToPlot // Passing points and other variables to AugmentedRealityCameraViewController
                 vc?.unitMeasure = unitMeasure
                 vc?.shouldPlanesBeShown = shouldPlanesBeShown
                 vc?.opacity = opacity
             case is AugmentedRealityFiducialMarkerViewController:
                 let vc = segue.destination as? AugmentedRealityFiducialMarkerViewController
-                vc?.pointsToPlot = pointsToPlot // Passing points to AugmentedRealityFiducialMarkerViewController
+                vc?.pointsToPlot = pointsToPlot // Passing points and other variables to AugmentedRealityFiducialMarkerViewController
                 vc?.pickedImage = tempImage
                 vc?.scannedPicture = scannedPicture
                 vc?.unitMeasure = unitMeasure
@@ -69,20 +68,20 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     @IBAction func plotButton(_ sender: Any) {
-        // print("Plot button pressed!")
         self.performSegue(withIdentifier: "toARCameraSegue", sender: self)
     }
     
     @IBAction func plotOnFiducialMarkerButton(_ sender: Any) {
-        // print("Plotting on fiducial marker!")
         self.performSegue(withIdentifier: "toARCameraFiducialMarkerSegue", sender: self)
     }
     
     @IBAction func settingsButton(_ sender: Any) {
-        // print("Opening settings!")
         self.performSegue(withIdentifier: "toSettingsViewControllerSegue", sender: self)
     }
     
+    /**
+     * Method that retrieves information from settings screen
+     */
     @IBAction func unwindFromSettings(_ sender: UIStoryboardSegue){
         if sender.source is SettingsViewController{
             if let senderVC = sender.source as? SettingsViewController{
@@ -99,12 +98,11 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     /**
-    * The user chooses the file to import points information
-    * The reading operation is performed in a separated thread in order to keep unlocked the main one
-    */
+     * The user chooses the file to import points information
+     * The reading operation is performed in a separated thread in order to keep unlocked the main one
+     */
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL){
         let fileUrl = url as URL
-        // print("Import result: \(fileUrl)")
         // In the following do/try/catch block the file is converted into a string
         var wholeFile = ""
         do{
@@ -117,7 +115,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     private func documentMenuWasCancelled(_ documentMenu: UIDocumentPickerViewController) {
-        // print("View was cancelled")
         dismiss(animated: true, completion: nil)
     }
     
@@ -139,6 +136,10 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         }
     }
     
+    /**
+     * Opens the camera in order to take a picture.
+     * Reads the picture to retrieve information from the contained QR Code
+     */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             let detector: CIDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy:CIDetectorAccuracyHigh])! // QRCode reader from CoreImage library
@@ -160,9 +161,9 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     }
     
     /**
-    * Generalized method: now wheter data comes from a pictures or a document the behaviour is the same.
-    * Reads the input string, creates for each row a Point and appends to the points to plot list.
-    **/
+     * Generalized method: now wheter data comes from a pictures or a document the behaviour is the same.
+     * Reads the input string, creates for each row a Point and appends to the points to plot list.
+     */
     private func readFile(wholeFile: String){
         pointsToPlot.removeAll() // Reading a new file cleans the points list
         taskInAction.isHidden = false // Shows the loading wheel
