@@ -12,6 +12,8 @@ Compatible devices are:
 * iPhone X
 * More recent devices
 
+Inside the repo are contained a couple of fiducial markers and some test csv files.
+
 Development and testing device: iPhone 6s updated to iOS 12.1
 
 Swift version: 4.2
