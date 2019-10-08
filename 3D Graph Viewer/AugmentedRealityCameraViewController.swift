@@ -56,29 +56,29 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
      * It also creates the pysical points and sets their attributes.
      */
     private func plotPoints(){
-        //self.taskInAction.isHidden = false // Shows the loading wheel
-        //self.taskInAction.startAnimating() // Animates the loading wheel
-        DispatchQueue.global(qos: .userInitiated).sync { [weak self] in // Adding points in separate thread
+        self.taskInAction.isHidden = false // Shows the loading wheel
+        self.taskInAction.startAnimating() // Animates the loading wheel
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in // Adding points in separate thread
             guard let self = self else {
                 return
             }
             do{
                 var i = 0 // Variable used to identify sequentially a sphere inside the array
-                for point in pointsToPlot{
+                for point in self.pointsToPlot{
                     //let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
-                    let sphere = SCNSphere(radius: CGFloat(calculateDouble(decimal: point.sizeCoefficient)))
-                    if(sphere.radius > maxPointRadius){
-                        maxPointRadius = sphere.radius
+                    let sphere = SCNSphere(radius: CGFloat(self.calculateDouble(decimal: point.sizeCoefficient)))
+                    if(sphere.radius > self.maxPointRadius){
+                        self.maxPointRadius = sphere.radius
                     }
                     let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
-                    if tempMax > maxIndex{
-                        maxIndex = tempMax
+                    if tempMax > self.maxIndex{
+                        self.maxIndex = tempMax
                     }
                     let sphereNode = SCNNode(geometry: sphere)
                     sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
                     i += 1
                     sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
-                    sphereNode.position = SCNVector3(Double(point.xCoordinate)!/unitMeasure, Double(point.yCoordinate)!/unitMeasure, Double(point.zCoordinate)!/unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
+                    sphereNode.position = SCNVector3(Double(point.xCoordinate)!/self.unitMeasure, Double(point.yCoordinate)!/self.unitMeasure, Double(point.zCoordinate)!/self.unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
                     let coordX = "\(sphereNode.position.x)"
                     let coordY = "\(sphereNode.position.y)"
                     let coordZ = "\(sphereNode.position.z)"
@@ -97,17 +97,19 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                     textNodeX.scale = SCNVector3(0.002,0.002,0.002)
                     textNodeY.scale = SCNVector3(0.002,0.002,0.002)
                     textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-                    originNode.addChildNode(sphereNode)
+                    self.originNode.addChildNode(sphereNode)
                 }
-                if shouldPlanesBeShown{
-                    addPlanes()
+                if self.shouldPlanesBeShown{
+                    self.addPlanes()
                 }
-                augmentedRealityScatterplot.scene.rootNode.addChildNode(originNode)
+                self.augmentedRealityScatterplot.scene.rootNode.addChildNode(self.originNode)
+            }
+            DispatchQueue.main.async { [weak self] in
+                // UI updates must be on main thread
+                self?.taskInAction.stopAnimating()
+                self?.taskInAction.isHidden = true
             }
         }
-        //self.taskInAction.stopAnimating() // Stops the loading wheel animation
-        //self.taskInAction.isHidden = true
-        
     }
     
     /**

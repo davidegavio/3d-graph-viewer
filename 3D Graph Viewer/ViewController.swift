@@ -168,19 +168,12 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         pointsToPlot.removeAll() // Reading a new file cleans the points list
         taskInAction.isHidden = false // Shows the loading wheel
         taskInAction.startAnimating() // Animates the loading wheel
-        DispatchQueue.global(qos: .userInitiated).sync { [weak self] in // Reading operation in separate thread
-            guard let self = self else {
-                return
-            }
-            do{
-                let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
-                for singleRow in rowsOfCsv {
-                    let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
-                    if valuesArray.count > 6 {
-                        let point: Point = Point(valuesArray: valuesArray)
-                        self.pointsToPlot.append(point)
-                    }
-                }
+        let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
+        for singleRow in rowsOfCsv {
+            let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
+            if valuesArray.count > 6 {
+                let point: Point = Point(valuesArray: valuesArray)
+                self.pointsToPlot.append(point)
             }
             if(pointsToPlot.count > 0){
                 plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
