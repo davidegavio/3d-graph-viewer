@@ -65,7 +65,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             do{
                 var i = 0 // Variable used to identify sequentially a sphere inside the array
                 for point in self.pointsToPlot{
-                    //let sphere = SCNSphere(radius: CGFloat(Double(point.sizeCoefficient)!/unitMeasure ))
                     let sphere = SCNSphere(radius: CGFloat(self.calculateDouble(decimal: point.sizeCoefficient)))
                     if(sphere.radius > self.maxPointRadius){
                         self.maxPointRadius = sphere.radius
@@ -79,24 +78,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                     i += 1
                     sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
                     sphereNode.position = SCNVector3(Double(point.xCoordinate)!/self.unitMeasure, Double(point.yCoordinate)!/self.unitMeasure, Double(point.zCoordinate)!/self.unitMeasure) // Setting the unit measure, eg. dividing by 10 sets the unit to dm
-                    let coordX = "\(sphereNode.position.x)"
-                    let coordY = "\(sphereNode.position.y)"
-                    let coordZ = "\(sphereNode.position.z)"
-                    let textX = SCNText(string: coordX, extrusionDepth: CGFloat(1))
-                    let textY = SCNText(string: coordY, extrusionDepth: CGFloat(1))
-                    let textZ = SCNText(string: coordZ, extrusionDepth: CGFloat(1))
-                    let textNodeX = SCNNode(geometry: textX)
-                    let textNodeY = SCNNode(geometry: textY)
-                    let textNodeZ = SCNNode(geometry: textZ)
-                    textNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-                    textNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-                    textNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-                    textNodeX.position = SCNVector3(x: sphereNode.position.x, y: 0, z: 0)
-                    textNodeY.position = SCNVector3(x: 0, y: sphereNode.position.y, z: 0)
-                    textNodeZ.position = SCNVector3(x: 0, y: 0, z: sphereNode.position.z)
-                    textNodeX.scale = SCNVector3(0.002,0.002,0.002)
-                    textNodeY.scale = SCNVector3(0.002,0.002,0.002)
-                    textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
                     self.originNode.addChildNode(sphereNode)
                 }
                 if self.shouldPlanesBeShown{
@@ -104,10 +85,9 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
                 }
                 self.augmentedRealityScatterplot.scene.rootNode.addChildNode(self.originNode)
             }
-            DispatchQueue.main.async { [weak self] in
-                // UI updates must be on main thread
-                self?.taskInAction.stopAnimating()
-                self?.taskInAction.isHidden = true
+            DispatchQueue.main.async {
+                self.taskInAction.stopAnimating() // Stops the loading wheel animation
+                self.taskInAction.isHidden = true
             }
         }
     }
@@ -181,50 +161,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
             }
         }
     }
-    
-    /*
-    func showLabels(){
-        for label in 0...(Int(maxIndex) + 1) {
-            let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
-            let labelNodeX = SCNNode(geometry: labelToShow)
-            labelNodeX.position = SCNVector3(Double(label)/unitMeasure, 0, 0)
-            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeY = SCNNode(geometry: labelToShow)
-            labelNodeY.position = SCNVector3(0, Double(label)/unitMeasure, 0)
-            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeZ = SCNNode(geometry: labelToShow)
-            labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
-            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            originNode.addChildNode(labelNodeX)
-            originNode.addChildNode(labelNodeY)
-            originNode.addChildNode(labelNodeZ)
-        }
-    }
-    
-    
-    func showNegativeLabels(){
-        for label in 0...(Int(maxIndex) + 1) {
-            let labelToShow = SCNText(string: String(-label), extrusionDepth: CGFloat(1))
-            let labelNodeX = SCNNode(geometry: labelToShow)
-            labelNodeX.position = SCNVector3(-Double(label)/unitMeasure, 0, 0)
-            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeY = SCNNode(geometry: labelToShow)
-            labelNodeY.position = SCNVector3(0, -Double(label)/unitMeasure, 0)
-            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeZ = SCNNode(geometry: labelToShow)
-            labelNodeZ.position = SCNVector3(0, 0, -Double(label)/unitMeasure)
-            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            originNode.addChildNode(labelNodeX)
-            originNode.addChildNode(labelNodeY)
-            originNode.addChildNode(labelNodeZ)
-        }
-    }*/
     
     
     /**

@@ -25,7 +25,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
     var opacity: Double = 0.5
     
     
-    @IBOutlet weak var taskInAction: UIActivityIndicatorView! // The loading wheel
     @IBOutlet weak var fileInfoLabel: UILabel!
     @IBOutlet weak var plotInOpenAirButton: UIButton!
     @IBOutlet weak var plotWithFiducialMarkerButton: UIButton!
@@ -37,8 +36,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         UIApplication.shared.isIdleTimerDisabled = true // Option to prevent the screen to become dark
         plotInOpenAirButton.isEnabled = false // Plotting buttons are disabled until a file is chosen
         plotWithFiducialMarkerButton.isEnabled = false
-        taskInAction.isHidden = true
-        taskInAction.hidesWhenStopped = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -166,8 +163,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
      */
     private func readFile(wholeFile: String){
         pointsToPlot.removeAll() // Reading a new file cleans the points list
-        taskInAction.isHidden = false // Shows the loading wheel
-        taskInAction.startAnimating() // Animates the loading wheel
         let rowsOfCsv = wholeFile.components(separatedBy: "\n") // Splits the file when a newline is found
         for singleRow in rowsOfCsv {
             let valuesArray = singleRow.components(separatedBy: ",") // Isolates point attributes splitting with the comma
@@ -175,16 +170,14 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
                 let point: Point = Point(valuesArray: valuesArray)
                 self.pointsToPlot.append(point)
             }
-            if(pointsToPlot.count > 0){
-                plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
-                plotWithFiducialMarkerButton.isEnabled = true
-                fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
-            }
-            else{
-                fileInfoLabel.text = "The picture doesn't contain any data"
-            }
-            taskInAction.stopAnimating() // Stops the loading wheel animation
-            
+        }
+        if(pointsToPlot.count > 0){
+            plotInOpenAirButton.isEnabled = true // File chosen, plot buttons get enabled
+            plotWithFiducialMarkerButton.isEnabled = true
+            fileInfoLabel.text = "The picture contains " + String(pointsToPlot.count) + " points to plot"
+        }
+        else{
+            fileInfoLabel.text = "The picture doesn't contain any data"
         }
         if pointsToPlot.count > 1500{
             let alertController = UIAlertController(title: "Warning!", message:
@@ -194,7 +187,6 @@ class ViewController: UIViewController, UIDocumentPickerDelegate, UIImagePickerC
         }
         
     }
-    
     
 }
 

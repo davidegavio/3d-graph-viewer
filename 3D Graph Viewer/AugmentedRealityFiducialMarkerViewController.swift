@@ -30,10 +30,12 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     var unitMeasure: Double = 10
     var maxIndex: Double = 0
     var shouldPlanesBeShown = true
-    var opacity: Double = 0.3
+    var opacity: Double = 0.5
+    @IBOutlet weak var taskInAction: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        taskInAction.isHidden = true
         shouldScatterplotBePlacedUponImage = true
         augmentedRealityFiducialMarkerScatterplot.delegate = self
         //augmentedRealityFiducialMarkerScatterplot.showsStatistics = true
@@ -69,17 +71,18 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
      */
     private func manageSceneStateChanges(withAnchor anchor: ARAnchor){
         if let imageAnchor = anchor as? ARImageAnchor{
+            DispatchQueue.main.async {
+                self.taskInAction.isHidden = false // Shows the loading wheel
+                self.taskInAction.startAnimating() // Animates the loading wheel
+            }
             lastImagePosition = imageAnchor.transform
             shouldScatterplotBePlacedUponImage = true
             if shouldScatterplotBePlacedUponImage{
                 let referenceImage = imageAnchor.referenceImage
                 //referenceImage.name = "Reference QR Code image"
                 lastReferenceImageDetected = referenceImage
-                placeScatterplotAt(position: lastImagePosition!)
+                placeScatterplotAt()
                 originNode.transform = SCNMatrix4(lastImagePosition!)
-                if shouldPlanesBeShown{
-                    addPlanes()
-                }
                 augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(originNode)
                 shouldScatterplotBePlacedUponImage = false
             }
@@ -90,42 +93,39 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
     /**
      * Actually generates and place the points.
      */
-    private func placeScatterplotAt(position: simd_float4x4){
-        var i = 0 // Variable used to identify sequentially a sphere inside the array
-        for point in pointsToPlot{
-            let sphere = SCNSphere(radius: CGFloat(calculateDouble(decimal: point.sizeCoefficient)))
-            if(sphere.radius > maxPointRadius){
-                maxPointRadius = sphere.radius
+    private func placeScatterplotAt(){
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in // Adding points in separate thread
+            guard let self = self else {
+                return
             }
-            let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
-            if tempMax > maxIndex{
-                maxIndex = tempMax
+            do{
+                var i = 0 // Variable used to identify sequentially a sphere inside the array
+                for point in self.pointsToPlot{
+                    let sphere = SCNSphere(radius: CGFloat(self.calculateDouble(decimal: point.sizeCoefficient)))
+                    if(sphere.radius > self.maxPointRadius){
+                        self.maxPointRadius = sphere.radius
+                    }
+                    let tempMax = max(max(Double(point.xCoordinate)!, Double(point.yCoordinate)!), Double(point.zCoordinate)!)
+                    if tempMax > self.maxIndex{
+                        self.maxIndex = tempMax
+                    }
+                    let sphereNode = SCNNode(geometry: sphere)
+                    sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
+                    sphereNode.position = SCNVector3(Double(point.xCoordinate)!/self.unitMeasure, Double(point.yCoordinate)!/self.unitMeasure, Double(point.zCoordinate)!/self.unitMeasure)
+                    sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
+                    i += 1
+                    self.originNode.addChildNode(sphereNode)
+                }
+                if self.shouldPlanesBeShown{
+                    self.addPlanes()
+                }
+                self.augmentedRealityFiducialMarkerScatterplot.scene.rootNode.addChildNode(self.originNode)
             }
-            let sphereNode = SCNNode(geometry: sphere)
-            sphere.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(Double(point.rColour) ?? 5)/255, green: CGFloat(Double(point.gColour) ?? 52)/255, blue: CGFloat(Double(point.bColour) ?? 105)/255, alpha: 1)
-            sphereNode.position = SCNVector3(Double(point.xCoordinate)!/unitMeasure, Double(point.yCoordinate)!/unitMeasure, Double(point.zCoordinate)!/unitMeasure)
-            let coordX = "\(sphereNode.position.x)"
-            let coordY = "\(sphereNode.position.y)"
-            let coordZ = "\(sphereNode.position.z)"
-            let textX = SCNText(string: coordX, extrusionDepth: CGFloat(1))
-            let textY = SCNText(string: coordY, extrusionDepth: CGFloat(1))
-            let textZ = SCNText(string: coordZ, extrusionDepth: CGFloat(1))
-            let textNodeX = SCNNode(geometry: textX)
-            let textNodeY = SCNNode(geometry: textY)
-            let textNodeZ = SCNNode(geometry: textZ)
-            textNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-            textNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-            textNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1) // UIColor needs values between 0 and 1 so the value is divided by 255
-            textNodeX.position = SCNVector3(x: sphereNode.position.x, y: 0, z: 0)
-            textNodeY.position = SCNVector3(x: 0, y: sphereNode.position.y, z: 0)
-            textNodeZ.position = SCNVector3(x: 0, y: 0, z: sphereNode.position.z)
-            textNodeX.scale = SCNVector3(0.002,0.002,0.002)
-            textNodeY.scale = SCNVector3(0.002,0.002,0.002)
-            textNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            sphereNode.name = "Name: " + String(i) // Assigning a name to a single sphere node
-            i += 1
-            originNode.addChildNode(sphereNode)
+            DispatchQueue.main.async {
+                self.taskInAction.stopAnimating() // Stops the loading wheel animation
+                self.taskInAction.isHidden = true
             }
+        }
     }
     
     /**
@@ -202,48 +202,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         arImage.name = "Custom ARImage"
         customReferenceSet.insert(arImage)
         // print("Added ARReferenceImage: \(arImage)")
-    }
-    
-    func showLabels(){
-        for label in 0...(Int(maxIndex) + 1) {
-            let labelToShow = SCNText(string: String(label), extrusionDepth: CGFloat(1))
-            let labelNodeX = SCNNode(geometry: labelToShow)
-            labelNodeX.position = SCNVector3(Double(label)/unitMeasure, 0, 0)
-            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeY = SCNNode(geometry: labelToShow)
-            labelNodeY.position = SCNVector3(0, Double(label)/unitMeasure, 0)
-            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeZ = SCNNode(geometry: labelToShow)
-            labelNodeZ.position = SCNVector3(0, 0, Double(label)/unitMeasure)
-            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            originNode.addChildNode(labelNodeX)
-            originNode.addChildNode(labelNodeY)
-            originNode.addChildNode(labelNodeZ)
-        }
-    }
-    
-    func showNegativeLabels(){
-        for label in 0...(Int(maxIndex) + 1) {
-            let labelToShow = SCNText(string: String(-label), extrusionDepth: CGFloat(1))
-            let labelNodeX = SCNNode(geometry: labelToShow)
-            labelNodeX.position = SCNVector3(-Double(label)/unitMeasure, 0, 0)
-            labelNodeX.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeX.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeY = SCNNode(geometry: labelToShow)
-            labelNodeY.position = SCNVector3(0, -Double(label)/unitMeasure, 0)
-            labelNodeY.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeY.scale = SCNVector3(0.002,0.002,0.002)
-            let labelNodeZ = SCNNode(geometry: labelToShow)
-            labelNodeZ.position = SCNVector3(0, 0, -Double(label)/unitMeasure)
-            labelNodeZ.geometry?.firstMaterial?.diffuse.contents = UIColor(displayP3Red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            labelNodeZ.scale = SCNVector3(0.002,0.002,0.002)
-            originNode.addChildNode(labelNodeX)
-            originNode.addChildNode(labelNodeY)
-            originNode.addChildNode(labelNodeZ)
-        }
     }
     
     /**

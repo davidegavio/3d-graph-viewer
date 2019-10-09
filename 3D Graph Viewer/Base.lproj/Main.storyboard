@@ -21,6 +21,10 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zXQ-ce-Soj">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </arscnView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2jM-1c-eFD">
+                                <rect key="frame" x="177" y="333" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -40,6 +44,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="augmentedRealityFiducialMarkerScatterplot" destination="zXQ-ce-Soj" id="RTV-j3-v9m"/>
+                        <outlet property="taskInAction" destination="2jM-1c-eFD" id="9Oq-oG-Pz2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l0n-cP-iLO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -61,9 +66,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gyN-so-sUy">
-                                <rect key="frame" x="177.5" y="323" width="20" height="21"/>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9s-u0-lRS">
                                 <rect key="frame" x="136" y="583" width="103" height="30"/>
                                 <accessibility key="accessibilityConfiguration" hint="Plot the selected csv graph" label="Plot button"/>
@@ -108,7 +110,6 @@
                         <constraints>
                             <constraint firstAttribute="bottomMargin" secondItem="D9s-u0-lRS" secondAttribute="bottom" constant="54" id="6il-QE-Uuj"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7fi-1S-Mew"/>
-                            <constraint firstItem="gyN-so-sUy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8uj-09-lLZ"/>
                             <constraint firstItem="FBf-28-Kzh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CBO-4a-Rl0"/>
                             <constraint firstItem="D9s-u0-lRS" firstAttribute="top" secondItem="YPS-36-jq1" secondAttribute="bottom" constant="8" symbolic="YES" id="ElK-Bo-ZtN"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="leading" secondItem="xF2-Rk-VNv" secondAttribute="leading" id="H00-ba-nhE"/>
@@ -117,13 +118,11 @@
                             <constraint firstAttribute="bottom" secondItem="7Lf-88-Zmd" secondAttribute="bottom" constant="20" id="YAb-hk-oHQ"/>
                             <constraint firstItem="7Lf-88-Zmd" firstAttribute="centerX" secondItem="D9s-u0-lRS" secondAttribute="centerX" id="Yd7-FU-WzT"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="top" secondItem="xF2-Rk-VNv" secondAttribute="bottom" constant="8" symbolic="YES" id="eTf-Ij-DS8"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="bottom" secondItem="gyN-so-sUy" secondAttribute="bottom" id="n0A-po-sv7"/>
+                            <constraint firstItem="VH3-lD-aOc" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mq5-ru-fB8"/>
                             <constraint firstItem="D9s-u0-lRS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="no0-1F-qJW"/>
                             <constraint firstItem="VH3-lD-aOc" firstAttribute="leading" secondItem="xF2-Rk-VNv" secondAttribute="leading" id="qam-ht-LwV"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="centerX" secondItem="D9s-u0-lRS" secondAttribute="centerX" id="uT0-hZ-cys"/>
-                            <constraint firstItem="gyN-so-sUy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wra-Bk-gFs"/>
                             <constraint firstItem="YPS-36-jq1" firstAttribute="trailing" secondItem="xF2-Rk-VNv" secondAttribute="trailing" id="xOT-VA-73m"/>
-                            <constraint firstItem="VH3-lD-aOc" firstAttribute="top" secondItem="gyN-so-sUy" secondAttribute="top" id="xi3-i8-dCr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -138,7 +137,6 @@
                         <outlet property="fileInfoLabel" destination="VH3-lD-aOc" id="jxn-l8-SdX"/>
                         <outlet property="plotInOpenAirButton" destination="D9s-u0-lRS" id="Lws-C9-B2D"/>
                         <outlet property="plotWithFiducialMarkerButton" destination="7Lf-88-Zmd" id="p9M-Fg-TEP"/>
-                        <outlet property="taskInAction" destination="gyN-so-sUy" id="X89-e0-X7n"/>
                         <segue destination="5FY-2t-oUL" kind="show" identifier="toARCameraSegue" id="aT5-oi-X4L"/>
                         <segue destination="hgD-yK-V8U" kind="show" identifier="toARCameraFiducialMarkerSegue" id="YTX-0f-6nH"/>
                         <segue destination="4sP-NI-AHs" kind="show" identifier="toSettingsViewControllerSegue" id="bMF-uh-Osi"/>
@@ -293,7 +291,6 @@
         <!--Open air graph-->
         <scene sceneID="4Pn-7Z-sw0">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YYi-gO-ZXX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="5FY-2t-oUL" customClass="AugmentedRealityCameraViewController" customModule="_D_Graph_Viewer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8fk-kp-bn2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -328,6 +325,7 @@
                         <outlet property="taskInAction" destination="LmM-oo-hGV" id="ZeQ-vs-CHX"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YYi-gO-ZXX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1991.2" y="-304.4977511244378"/>
         </scene>
