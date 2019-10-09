@@ -22,7 +22,6 @@ class SettingsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // print("Hello I'm SettingsViewController")
         switch unit{
         case 1000:
             unitOfMeasure.selectedSegmentIndex = 0

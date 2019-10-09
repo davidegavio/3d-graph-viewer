@@ -28,8 +28,6 @@ class AugmentedRealityCameraViewController: UIViewController, ARSCNViewDelegate 
         super.viewDidLoad()
         taskInAction.isHidden = true
         augmentedRealityScatterplot.delegate = self
-        //augmentedRealityScatterplot.showsStatistics = true
-        //augmentedRealityScatterplot.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         let scene = SCNScene()
         augmentedRealityScatterplot.scene = scene
         let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleTap(rec:))) // Tap gesture recognizer

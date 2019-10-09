@@ -45,7 +45,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
         augmentedRealityFiducialMarkerScatterplot.addGestureRecognizer(tapRec) // Adding gesture recognizer to sceneview
         originNode = SCNNode()
         originNode.position = SCNVector3(0, -0.2, -1)
-        // ("Hello I'm AugmentedRealityFiducialMarkerViewController")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +78,6 @@ class AugmentedRealityFiducialMarkerViewController: UIViewController, ARSCNViewD
             shouldScatterplotBePlacedUponImage = true
             if shouldScatterplotBePlacedUponImage{
                 let referenceImage = imageAnchor.referenceImage
-                //referenceImage.name = "Reference QR Code image"
                 lastReferenceImageDetected = referenceImage
                 placeScatterplotAt()
                 originNode.transform = SCNMatrix4(lastImagePosition!)
