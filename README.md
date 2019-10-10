@@ -12,11 +12,12 @@ Compatible devices are:
 * iPhone X
 * More recent devices
 
-Inside the repo are contained a couple of fiducial markers and some test csv files.
-
 Development and testing device: iPhone 6s updated to iOS 12.1
 
 Swift version: 4.2
+
+Inside the repo are contained a couple of fiducial markers and some test csv files.
+
 # Functions
 The app functions are:
 * Retrieving information from CSV file contained in the device memory or hosted on a cloud storage
